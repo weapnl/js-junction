@@ -15,12 +15,12 @@ This package has support for Typescript (TS).
 
 ## Installation
 ```bash
-npm install @weap/js-junction
+npm install @weapnl/js-junction
 ```
 
 ## Quick Start
 ```javascript
-import api, { Model } from '@weap/js-junction';
+import api, { Model } from '@weapnl/js-junction';
 
 api.host('YOUR API HOST URI HERE') // Optionally: add '.suffix('API SUFFIX HERE');'
 
@@ -66,7 +66,7 @@ const users = User.index();
 ### Creating Models
 ```javascript
 // User.js
-import { Model } from '@weap/js-junction';
+import { Model } from '@weapnl/js-junction';
 
 export default class User extends Model {
     // All the model properties which are fully readable and fillable on the API
