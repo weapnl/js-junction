@@ -1,0 +1,14 @@
+services:
+  dev:
+    image: registry.weap.nl:5005/docker/npmnginx:8.1
+    volumes:
+      - ./:/var/www
+      - ../Shared:/var/shared
+    command: "tail -f /dev/null"
+
+  build:
+    image: registry.weap.nl:5005/docker/npmnginx:8.1
+    volumes:
+      - ./:/var/www
+      - ../Shared:/var/shared
+    command: "npm run prod"
