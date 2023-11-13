@@ -147,4 +147,5 @@ declare class Batch {
     execute(method: string): Promise<any[]>;
 }
 
-export default Api;
+declare const api: Api;
+export default api;
