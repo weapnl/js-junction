@@ -6,6 +6,7 @@ export default class Connection {
         this._abortController = null;
 
         this._config = {};
+        this._api = null;
 
         this.running = false;
         this.canceled = false;
@@ -22,6 +23,10 @@ export default class Connection {
 
     setConfig (config) {
         this._config = config;
+    }
+
+    setApi (api) {
+        this._api = api;
     }
 
     async get (query, params) {
@@ -48,7 +53,7 @@ export default class Connection {
         }
 
         const config = {
-            url: api.baseUrl + url,
+            url: (this._api ? this._api.baseUrl : api.baseUrl) + url,
             method,
             ...({
                 [method === 'get' ? 'params' : 'data']: data,
