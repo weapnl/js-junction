@@ -7,6 +7,6 @@ window._ = _;
 const api = new Api();
 window.api = api;
 
-export { Model };
+export { Model, Api };
 
 export default api;

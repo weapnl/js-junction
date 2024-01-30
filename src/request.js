@@ -8,6 +8,7 @@ import actionMixin from './mixins/actionMixin';
 import filterMixin from './mixins/filterMixin';
 import modifierMixin from './mixins/modifierMixin';
 import paginationMixin from './mixins/paginationMixin';
+import Api from './api';
 
 /**
  * @mixes actionMixin
@@ -308,6 +309,17 @@ export default class Request {
         appendFormData(data);
 
         return formData;
+    }
+
+    /**
+     * @param {Api} api
+     *
+     * @returns {this} The current instance.
+     */
+    setApi (api) {
+        this._connection.setApi(api);
+
+        return this;
     }
 }
 
