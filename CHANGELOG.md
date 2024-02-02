@@ -1,5 +1,7 @@
 # Changelog
 
+## Unreleased
+
 ## v0.0.3
 - Added ability to override the api instance on requests.
 - Scopes & Wheres improvements.
