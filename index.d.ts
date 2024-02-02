@@ -53,7 +53,7 @@ declare class Mixins {
     scope(name: string, ...params: any[]): this;
     scopes(...params: any[]): this;
     search(value: any, columns?: any[]): this;
-    where(column: string, operator: string, value: any): this;
+    where(column: string, operator: string, value?: any): this;
     wheres(...params: any[]): this;
     whereIn(column: string, values: any[]): this;
     whereIns(...params: any[]): this;
@@ -84,7 +84,8 @@ declare class Request extends Mixins {
     onUnauthorized(callback?: (response: Response) => void): this;
     onForbidden(callback?: (response: Response) => void): this;
     triggerResponseEvents(response: Response, successResponse?: any): Promise<void>;
-    customParameters(parameters?: any[]): this;
+    customParameters(parameters?: object): this;
+    setApi(api: Api): this;
 }
 
 export class Model extends Request {
