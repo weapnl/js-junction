@@ -56,6 +56,18 @@ const filterMixin = {
         return this;
     },
 
+    scopes (input) {
+        input.forEach(scope => {
+            if (Array.isArray(scope)) {
+                this.scope(...scope);
+            } else {
+                this.scope(scope);
+            }
+        });
+
+        return this;
+    },
+
     search (value, columns = []) {
         if (! Array.isArray(columns)) columns = [columns];
 
@@ -76,8 +88,12 @@ const filterMixin = {
         return this;
     },
 
-    wheres (...params) {
-        return this.where(...params);
+    wheres (input) {
+        input.forEach(where => {
+            this.where(...where);
+        });
+
+        return this;
     },
 
     whereIn (column, values) {
@@ -88,8 +104,12 @@ const filterMixin = {
         return this;
     },
 
-    whereIns (...params) {
-        return this.whereIn(...params);
+    whereIns (input) {
+        input.forEach(whereIn => {
+            this.whereIn(...whereIn);
+        });
+
+        return this;
     },
 
     pluck (fields) {

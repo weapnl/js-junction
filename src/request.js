@@ -164,7 +164,7 @@ export default class Request {
             this._modifiers.toObject(),
             this._pagination.toObject(),
             this._action.toObject(),
-            ...this._customParameters,
+            _.merge(...this._customParameters),
         ]));
     }
 
@@ -262,12 +262,12 @@ export default class Request {
     /**
      * Add custom parameters to the request.
      *
-     * @param {Array} parameters
+     * @param {Object} parameters
      *
      * @returns {this} The current instance.
      */
-    customParameters (parameters = []) {
-        this._customParameters.push(...parameters);
+    customParameters (parameters = {}) {
+        this._customParameters.push(parameters);
 
         return this;
     }
