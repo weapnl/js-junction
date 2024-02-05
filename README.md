@@ -192,6 +192,7 @@ const request = await new User()
     .search('john doe') // Search for 'john doe', on the searchable columns of the model (defined in the API)
     .search('john doe', ['name', 'email']) // Search for 'john doe' in columns 'name' and 'email'
     .whereIn('city', ['Gemert', 'Eindhoven', 'Amsterdam']) // Set where in clause
+    .whereNotIn('city', ['Rotterdam', 'London']) // Set where not in clause
     .where('name', '=', 'John') // Add where clause
     .where('name', 'John') // If no operator is given, '=' is used
     .appends('age') // Add accessor
