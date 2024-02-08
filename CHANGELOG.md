@@ -1,8 +1,6 @@
 # Changelog
 
 ## Unreleased
-
-## v0.0.4
 - Added support for whereNotIn.
 
 ## v0.0.3
