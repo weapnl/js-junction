@@ -4,11 +4,13 @@ import Caster from '../caster';
  * @implements {Property}
  */
 export default class Attributes {
+    #model;
+
     /**
      * @param {Model} model Instance of the model.
      */
     constructor (model) {
-        this.model = model;
+        this.#model = model;
 
         _.each(model.constructor.attributes(), (options, key) => {
             this.set(key, _.has(options, 'default') ? options.default : null);
@@ -19,7 +21,7 @@ export default class Attributes {
      * @param {Object} json.
      */
     fromJson (json) {
-        _.each(this.model.constructor.attributes(), (options, key) => {
+        _.each(this.#model.constructor.attributes(), (options, key) => {
             let value = _.get(json, options.jsonKey ?? _.snakeCase(key), _.get(json, _.camelCase(key)));
 
             if (_.isNil(value)) {
@@ -38,7 +40,7 @@ export default class Attributes {
     toJson () {
         const json = {};
 
-        _.each(this.model.constructor.attributes(), (options, key) => {
+        _.each(this.#model.constructor.attributes(), (options, key) => {
             let jsonValue = this.get(key);
 
             jsonValue = Attributes._getCastedToJsonValue(jsonValue, options);
@@ -55,7 +57,7 @@ export default class Attributes {
      * @returns {*} The value of the attribute.
      */
     get (attribute) {
-        return _.get(this.model, attribute);
+        return _.get(this.#model, attribute);
     }
 
     /**
@@ -66,7 +68,7 @@ export default class Attributes {
      */
     set (attribute, value = null) {
         if (_.isObject(attribute)) {
-            _.each(this.model.constructor.attributes(), (options, key) => {
+            _.each(this.#model.constructor.attributes(), (options, key) => {
                 if (! _.has(attribute, key)) return;
 
                 this.set(key, attribute[key]);
@@ -75,7 +77,7 @@ export default class Attributes {
             return this;
         }
 
-        this.model[attribute] = value;
+        this.#model[attribute] = value;
 
         return this;
     }
