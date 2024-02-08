@@ -4,11 +4,13 @@ import Caster from '../caster';
  * @implements {Property}
  */
 export default class Relations {
+    #model;
+
     /**
      * @param {Model} model Instance of the model.
      */
     constructor (model) {
-        this.model = model;
+        this.#model = model;
 
         _.each(model.constructor.relations(), (options, key) => {
             this.set(key, _.has(options, 'default') ? options.default : null);
@@ -19,7 +21,7 @@ export default class Relations {
      * @param {Object} json.
      */
     fromJson (json) {
-        _.each(this.model.constructor.relations(), (options, key) => {
+        _.each(this.#model.constructor.relations(), (options, key) => {
             let value = _.get(json, options.jsonKey ?? _.snakeCase(key), _.get(json, _.camelCase(key)));
 
             value = value
@@ -36,7 +38,7 @@ export default class Relations {
     toJson () {
         const json = {};
 
-        _.each(this.model.constructor.relations(), (options, key) => {
+        _.each(this.#model.constructor.relations(), (options, key) => {
             let jsonValue = this.get(key);
 
             jsonValue = Relations._getCastedToJsonValue(jsonValue, options);
@@ -53,7 +55,7 @@ export default class Relations {
      * @returns {*} The value of the relation.
      */
     get (relation) {
-        return _.get(this.model, relation);
+        return _.get(this.#model, relation);
     }
 
     /**
@@ -64,7 +66,7 @@ export default class Relations {
      */
     set (relation, value = null) {
         if (_.isObject(relation)) {
-            _.each(this.model.constructor.relations(), (options, key) => {
+            _.each(this.#model.constructor.relations(), (options, key) => {
                 if (! _.has(relation, key)) return;
 
                 this.set(key, relation[key]);
@@ -73,7 +75,7 @@ export default class Relations {
             return this;
         }
 
-        this.model[relation] = value;
+        this.#model[relation] = value;
 
         return this;
     }
