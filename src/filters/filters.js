@@ -5,6 +5,7 @@ import Scopes from './scopes';
 import Search from './search';
 import Wheres from './wheres';
 import WhereIn from './whereIn';
+import WhereNotIn from './whereNotIn';
 import Count from './count';
 import Pluck from './pluck';
 
@@ -18,13 +19,14 @@ export default class Filters {
         this.search = new Search();
         this.wheres = new Wheres();
         this.whereIn = new WhereIn();
+        this.whereNotIn = new WhereNotIn();
         this.pluck = new Pluck();
     }
 
     toObject () {
         const items = [];
 
-        for (let i = 0, filters = ['count', 'limit', 'order', 'relations', 'scopes', 'search', 'wheres', 'whereIn', 'pluck']; i < filters.length; i++) {
+        for (let i = 0, filters = ['count', 'limit', 'order', 'relations', 'scopes', 'search', 'wheres', 'whereIn', 'whereNotIn', 'pluck']; i < filters.length; i++) {
             if (this[filters[i]].filled()) items.push(this[filters[i]].toObject());
         }
 

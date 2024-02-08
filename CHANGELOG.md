@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added support for whereNotIn.
 
 ## v0.0.3
 - Added ability to override the api instance on requests.

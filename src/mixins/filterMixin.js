@@ -112,6 +112,22 @@ const filterMixin = {
         return this;
     },
 
+    whereNotIn (column, values) {
+        if (! Array.isArray(values)) values = [values];
+
+        this._filters.whereNotIn.add(column, values);
+
+        return this;
+    },
+
+    whereNotIns (input) {
+        input.forEach(whereIn => {
+            this.whereNotIn(...whereIn);
+        });
+
+        return this;
+    },
+
     pluck (fields) {
         if (! Array.isArray(fields)) fields = [fields];
 

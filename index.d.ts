@@ -57,6 +57,8 @@ declare class Mixins {
     wheres(...params: any[]): this;
     whereIn(column: string, values: any[]): this;
     whereIns(...params: any[]): this;
+    whereNotIn(column: string, values: any[]): this;
+    whereNotIns(...params: any[]): this;
     pluck(fields: any[]): this;
 
     appends(appends: string | string[]): this;

@@ -1,19 +1,19 @@
 import Filter from './filter';
 import Format from '../utilities/format';
 
-export default class WhereIn extends Filter {
+export default class WhereNotIn extends Filter {
     constructor () {
         super();
 
-        this._whereIns = [];
+        this._whereNotIns = [];
     }
 
     filled () {
-        return this._whereIns.length > 0;
+        return this._whereNotIns.length > 0;
     }
 
     add (column, values) {
-        this._whereIns.push({
+        this._whereNotIns.push({
             column: Format.snakeCase(column),
             values,
         });
@@ -23,7 +23,7 @@ export default class WhereIn extends Filter {
         const data = {};
 
         if (this.filled()) {
-            data.where_in = this._whereIns;
+            data.where_not_in = this._whereNotIns;
         }
 
         return data;
