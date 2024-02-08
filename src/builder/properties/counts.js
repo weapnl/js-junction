@@ -2,11 +2,13 @@
  * @implements {Property}
  */
 export default class Counts {
+    #model;
+
     /**
      * @param {Model} model Instance of the model.
      */
     constructor (model) {
-        this.model = model;
+        this.#model = model;
 
         _.each(model.constructor.counts(), (options, key) => {
             this.set(this.key(key, true), _.has(options, 'default') ? options.default : null);
@@ -17,7 +19,7 @@ export default class Counts {
      * @param {Object} json.
      */
     fromJson (json) {
-        _.each(this.model.constructor.counts(), (options, key) => {
+        _.each(this.#model.constructor.counts(), (options, key) => {
             let value = _.get(json, this.key(key));
 
             value = value !== undefined
@@ -34,7 +36,7 @@ export default class Counts {
     toJson () {
         const json = {};
 
-        _.each(this.model.constructor.counts(), (options, key) => {
+        _.each(this.#model.constructor.counts(), (options, key) => {
             _.set(json, key, this.get(key));
         });
 
@@ -47,7 +49,7 @@ export default class Counts {
      * @returns {*} The value of the attribute.
      */
     get (attribute) {
-        return _.get(this.model, this.key(attribute, true));
+        return _.get(this.#model, this.key(attribute, true));
     }
 
     /**
@@ -57,7 +59,7 @@ export default class Counts {
      * @returns {*} The value that was set.
      */
     set (attribute, value) {
-        this.model[this.key(attribute, true)] = value;
+        this.#model[this.key(attribute, true)] = value;
 
         return value;
     }
