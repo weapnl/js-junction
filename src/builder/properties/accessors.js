@@ -4,11 +4,13 @@ import Caster from '../caster';
  * @implements {Property}
  */
 export default class Accessors {
+    #model;
+
     /**
      * @param {Model} model Instance of the model.
      */
     constructor (model) {
-        this.model = model;
+        this.#model = model;
 
         _.each(model.constructor.accessors(), (options, key) => {
             this.set(key, _.has(options, 'default') ? options.default : null);
@@ -19,7 +21,7 @@ export default class Accessors {
      * @param {Object} json.
      */
     fromJson (json) {
-        _.each(this.model.constructor.accessors(), (options, key) => {
+        _.each(this.#model.constructor.accessors(), (options, key) => {
             let value = _.get(json, options.jsonKey ?? _.snakeCase(key), _.get(json, _.camelCase(key)));
 
             if (_.isNil(value)) {
@@ -38,7 +40,7 @@ export default class Accessors {
     toJson () {
         const json = {};
 
-        _.each(this.model.constructor.accessors(), (options, key) => {
+        _.each(this.#model.constructor.accessors(), (options, key) => {
             let jsonValue = this.get(key);
 
             jsonValue = Accessors._getCastedToJsonValue(jsonValue, options);
@@ -55,7 +57,7 @@ export default class Accessors {
      * @returns {*} The value of the attribute.
      */
     get (attribute) {
-        return _.get(this.model, attribute);
+        return _.get(this.#model, attribute);
     }
 
     /**
@@ -65,7 +67,7 @@ export default class Accessors {
      * @returns {*} The value that was set.
      */
     set (attribute, value) {
-        this.model[attribute] = value;
+        this.#model[attribute] = value;
 
         return value;
     }
