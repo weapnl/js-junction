@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added license file.
 
 ## v0.0.4
 - Added support for whereNotIn.
