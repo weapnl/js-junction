@@ -9,7 +9,7 @@
     "prod": "webpack"
   },
   "author": "Robin",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
