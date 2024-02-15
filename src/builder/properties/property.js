@@ -3,35 +3,40 @@
  */
 class Property {
     /**
+     * @param {Model} model
      * @param {string} key
      *
      * @returns {*} The value of the attribute.
      */
-    get (key) {
+    get (model, key) {
         throw new Error('not implemented');
     }
 
     /**
-     * @param  {string} key
-     * @param  {*} value
+     * @param {Model} model
+     * @param {string} key
+     * @param {*} value
      *
      * @returns {*} The value that was set.
      */
-    set (key, value) {
+    set (model, key, value) {
         throw new Error('not implemented');
     }
 
     /**
+     * @param {Model} model
      * @param {Object} json.
      */
-    fromJson (json) {
+    fromJson (model, json) {
         throw new Error('not implemented');
     }
 
     /**
+     * @param {Model} model
+     *
      * @return {Object} The json object.
      */
-    toJson () {
+    toJson (model) {
         throw new Error('not implemented');
     }
 }

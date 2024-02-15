@@ -4,42 +4,41 @@ import Caster from '../caster';
  * @implements {Property}
  */
 export default class Relations {
-    #model;
-
     /**
      * @param {Model} model Instance of the model.
      */
     constructor (model) {
-        this.#model = model;
-
         _.each(model.constructor.relations(), (options, key) => {
-            this.set(key, _.has(options, 'default') ? options.default : null);
+            this.set(model, key, _.has(options, 'default') ? options.default : null);
         });
     }
 
     /**
+     * @param {Model} model
      * @param {Object} json.
      */
-    fromJson (json) {
-        _.each(this.#model.constructor.relations(), (options, key) => {
+    fromJson (model, json) {
+        _.each(model.constructor.relations(), (options, key) => {
             let value = _.get(json, options.jsonKey ?? _.snakeCase(key), _.get(json, _.camelCase(key)));
 
             value = value
                 ? Relations._getCastedFromJsonValue(value, options)
                 : value;
 
-            this.set(key, value);
+            this.set(model, key, value);
         });
     }
 
     /**
+     * @param {Model} model
+     *
      * @return {Object} The attributes casted to a json object.
      */
-    toJson () {
+    toJson (model) {
         const json = {};
 
-        _.each(this.#model.constructor.relations(), (options, key) => {
-            let jsonValue = this.get(key);
+        _.each(model.constructor.relations(), (options, key) => {
+            let jsonValue = this.get(model, key);
 
             jsonValue = Relations._getCastedToJsonValue(jsonValue, options);
 
@@ -50,32 +49,34 @@ export default class Relations {
     }
 
     /**
+     * @param {Model} model
      * @param {string} relation
      *
      * @returns {*} The value of the relation.
      */
-    get (relation) {
-        return _.get(this.#model, relation);
+    get (model, relation) {
+        return _.get(model, relation);
     }
 
     /**
-     * @param  {string|Object} relation
-     * @param  {*} value
+     * @param {Model} model
+     * @param {string|Object} relation
+     * @param {*} value
      *
      * @returns {Relations}
      */
-    set (relation, value = null) {
+    set (model, relation, value = null) {
         if (_.isObject(relation)) {
-            _.each(this.#model.constructor.relations(), (options, key) => {
+            _.each(model.constructor.relations(), (options, key) => {
                 if (! _.has(relation, key)) return;
 
-                this.set(key, relation[key]);
+                this.set(model, key, relation[key]);
             });
 
             return this;
         }
 
-        this.#model[relation] = value;
+        model[relation] = value;
 
         return this;
     }

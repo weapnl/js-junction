@@ -2,64 +2,65 @@
  * @implements {Property}
  */
 export default class Counts {
-    #model;
-
     /**
      * @param {Model} model Instance of the model.
      */
     constructor (model) {
-        this.#model = model;
-
         _.each(model.constructor.counts(), (options, key) => {
-            this.set(this.key(key, true), _.has(options, 'default') ? options.default : null);
+            this.set(model, this.key(key, true), _.has(options, 'default') ? options.default : null);
         });
     }
 
     /**
+     * @param {Model} model
      * @param {Object} json.
      */
-    fromJson (json) {
-        _.each(this.#model.constructor.counts(), (options, key) => {
+    fromJson (model, json) {
+        _.each(model.constructor.counts(), (options, key) => {
             let value = _.get(json, this.key(key));
 
             value = value !== undefined
                 ? _.toInteger(value)
                 : null;
 
-            this.set(this.key(key, true), value);
+            this.set(model, this.key(key, true), value);
         });
     }
 
     /**
+     * @param {Model} model
+     *
      * @return {Object} The attributes casted to a json object.
      */
-    toJson () {
+    toJson (model) {
         const json = {};
 
-        _.each(this.#model.constructor.counts(), (options, key) => {
-            _.set(json, key, this.get(key));
+        _.each(model.constructor.counts(), (options, key) => {
+            _.set(json, key, this.get(model, key));
         });
 
         return json;
     }
 
     /**
+     * @param {Model} model
      * @param {string} attribute
      *
      * @returns {*} The value of the attribute.
      */
-    get (attribute) {
-        return _.get(this.#model, this.key(attribute, true));
+    get (model, attribute) {
+        return _.get(model, this.key(attribute, true));
     }
 
     /**
-     * @param  {string} attribute
-     * @param  {*} value
+     * @param {Model} model
+     * @param {string} attribute
+     * @param {*} value
      *
      * @returns {*} The value that was set.
      */
-    set (attribute, value) {
-        this.#model[this.key(attribute, true)] = value;
+    set (model, attribute, value) {
+        model[this.key(attribute, true)] = value;
 
         return value;
     }

@@ -68,7 +68,7 @@ export default class Request {
         const url = this.url ?? this.constructor.endpoint;
 
         this._response = await this._connection.get(
-            `${url}`,
+            url,
             this.bodyParameters,
         );
 
@@ -86,7 +86,7 @@ export default class Request {
         const url = this.url ?? this.constructor.endpoint;
 
         this._response = await this._connection.post(
-            `${url}`,
+            url,
             data,
         );
 
@@ -104,7 +104,7 @@ export default class Request {
         const url = this.url ?? this.constructor.endpoint;
 
         this._response = await this._connection.put(
-            `${url}`,
+            url,
             { ...data, ...this.bodyParameters },
         );
 
@@ -120,7 +120,7 @@ export default class Request {
         const url = this.url ?? this.constructor.endpoint;
 
         this._response = await this._connection.delete(
-            `${url}`,
+            url,
         );
 
         await this.triggerResponseEvents(this._response);
