@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Added license file.
+- Private field bugfix, proxy access.
 
 ## v0.0.4
 - Added support for whereNotIn.
