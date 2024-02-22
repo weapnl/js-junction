@@ -27,10 +27,10 @@ export default class Model extends Request {
     static fromJson (json) {
         const instance = new (this)();
 
-        instance._accessors.fromJson(json);
-        instance._attributes.fromJson(json);
-        instance._counts.fromJson(json);
-        instance._relations.fromJson(json);
+        instance._accessors.fromJson(instance, json);
+        instance._attributes.fromJson(instance, json);
+        instance._counts.fromJson(instance, json);
+        instance._relations.fromJson(instance, json);
 
         return instance;
     }
@@ -42,10 +42,10 @@ export default class Model extends Request {
      */
     toJson () {
         return {
-            ...this._accessors.toJson(),
-            ...this._attributes.toJson(),
-            ...this._counts.toJson(),
-            ...this._relations.toJson(),
+            ...this._accessors.toJson(this),
+            ...this._attributes.toJson(this),
+            ...this._counts.toJson(this),
+            ...this._relations.toJson(this),
         };
     }
 
@@ -54,8 +54,8 @@ export default class Model extends Request {
      * @returns {this}
      */
     fill (values = {}) {
-        this._attributes.set(values);
-        this._relations.set(values);
+        this._attributes.set(this, values);
+        this._relations.set(this, values);
 
         return this;
     }
@@ -172,7 +172,7 @@ export default class Model extends Request {
     async store (extraData = {}) {
         this._response = await this._connection.post(
             this._queryString(),
-            { ...this._attributes.toJson(), ...extraData },
+            { ...this._attributes.toJson(this), ...extraData },
         );
 
         let item;
@@ -196,7 +196,7 @@ export default class Model extends Request {
     async update (extraData = {}) {
         this._response = await this._connection.put(
             this._queryString(this._identifier),
-            { ...this._attributes.toJson(), ...extraData },
+            { ...this._attributes.toJson(this), ...extraData },
         );
 
         let item;
