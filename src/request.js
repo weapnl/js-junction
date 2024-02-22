@@ -38,8 +38,8 @@ export default class Request {
         this.key = null;
     }
 
-    setKey (name) {
-        this.key = name;
+    setKey (key) {
+        this.key = key;
 
         return this;
     }
