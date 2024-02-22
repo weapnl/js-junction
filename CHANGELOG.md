@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Added license file.
+- Added support for request cancellation by keyName.
 
 ## v0.0.4
 - Added support for whereNotIn.
