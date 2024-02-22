@@ -6,7 +6,7 @@ export default class Api {
     constructor () {
         this.setHeader('X-Requested-With', 'XMLHttpRequest');
 
-        this._requests = [];
+        this._requests = {};
 
         this.host('/').suffix('');
 
@@ -55,6 +55,15 @@ export default class Api {
         return url;
     }
 
+    cancelRunning (request) {
+        if (! request.key) {
+            return;
+        }
+
+        this._requests[request.key]?.cancel();
+        this._requests[request.key] = request;
+    }
+
     /**
      * @param {string} uri
      *
@@ -70,13 +79,12 @@ export default class Api {
         const request = new Request();
 
         request.setUrl(uri)
+            .setApi(this)
             .onSuccess(this._onSuccess)
             .onError(this._onError)
             .onValidationError(this._onValidationError)
             .onUnauthorized(this._onUnauthorized)
             .onForbidden(this._onForbidden);
-
-        this._requests.push(request);
 
         return request;
     }

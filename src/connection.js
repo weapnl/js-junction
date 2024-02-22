@@ -11,14 +11,20 @@ export default class Connection {
         this.running = false;
         this.canceled = false;
         this.failed = false;
+
+        this._request = null;
     }
 
     cancel () {
-        if (! this._abortController) return this;
+        if (! this._abortController || ! this.running) return this;
 
         this._abortController.abort();
 
         this.canceled = true;
+    }
+
+    setRequest (request) {
+        this._request = request;
     }
 
     setConfig (config) {
@@ -51,6 +57,8 @@ export default class Connection {
         if (! _.startsWith(url, '/')) {
             url = `/${url}`;
         }
+
+        this._api.cancelRunning(this._request);
 
         const config = {
             url: (this._api ? this._api.baseUrl : api.baseUrl) + url,

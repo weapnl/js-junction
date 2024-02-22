@@ -320,6 +320,25 @@ request.cancel();
 api.cancelRequests(); // Cancel all currently pending requests.
 ```
 
+You are also able to cancel requests by a key. This is useful when you want to allow only one request at a time for a specific action (a table index for example). This works on all types of requests.
+
+To do this, you can use the following:
+
+```javascript
+const request = api
+        .request('users')
+        .setKey('get-users')
+        .get();
+```
+A previously pending request with the same key will be cancelled, and this new request will be executed.
+
+This is also possible on a model:
+```javascript
+const user = new User()
+        .setKey('get-user')
+        .index();
+```
+
 **Set a bearer token**
 
 ```javascript

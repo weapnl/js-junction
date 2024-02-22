@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added support for request cancellation by key.
 
 ## v0.0.5
 - Added license file.
