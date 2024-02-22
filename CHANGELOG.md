@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## v0.0.6
 - Added support for request cancellation by key.
 
 ## v0.0.5
