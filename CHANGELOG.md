@@ -4,7 +4,7 @@
 
 ## v0.0.5
 - Added license file.
-- - Private field bugfix, proxy access.
+- Private field bugfix, proxy access.
 - Added support for request cancellation by keyName.
 
 ## v0.0.4
