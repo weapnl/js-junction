@@ -8,7 +8,6 @@ import actionMixin from './mixins/actionMixin';
 import filterMixin from './mixins/filterMixin';
 import modifierMixin from './mixins/modifierMixin';
 import paginationMixin from './mixins/paginationMixin';
-import Api from './api';
 
 /**
  * @mixes actionMixin
@@ -33,8 +32,16 @@ export default class Request {
         this._onForbidden = () => {};
 
         this._connection = new Connection();
+        this._connection.setRequest(this);
 
         this._response = null;
+        this.key = null;
+    }
+
+    setKey (name) {
+        this.key = name;
+
+        return this;
     }
 
     get response () {

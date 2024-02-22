@@ -13,6 +13,7 @@ export default class Model extends Request {
         this._counts = new Counts(this);
         this._relations = new Relations(this);
 
+        this.setApi(api);
         this.fill(defaults);
     }
 
