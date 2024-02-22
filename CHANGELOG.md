@@ -1,11 +1,11 @@
 # Changelog
 
 ## Unreleased
+- Added support for request cancellation by key.
 
 ## v0.0.5
 - Added license file.
 - Private field bugfix, proxy access.
-- Added support for request cancellation by key.
 
 ## v0.0.4
 - Added support for whereNotIn.
