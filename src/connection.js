@@ -56,8 +56,6 @@ export default class Connection {
             url = `/${url}`;
         }
 
-        //this._api.cancelRunning(this._request);
-
         const config = {
             url: (this._api ? this._api.baseUrl : api.baseUrl) + url,
             method,
