@@ -11,8 +11,6 @@ export default class Connection {
         this.running = false;
         this.canceled = false;
         this.failed = false;
-
-        this._request = null;
     }
 
     cancel () {
@@ -23,8 +21,8 @@ export default class Connection {
         this.canceled = true;
     }
 
-    setRequest (request) {
-        this._request = request;
+    cancelRunning (request) {
+        this._api.cancelRunning(request);
     }
 
     setConfig (config) {
@@ -58,7 +56,7 @@ export default class Connection {
             url = `/${url}`;
         }
 
-        this._api.cancelRunning(this._request);
+        //this._api.cancelRunning(this._request);
 
         const config = {
             url: (this._api ? this._api.baseUrl : api.baseUrl) + url,
