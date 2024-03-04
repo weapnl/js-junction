@@ -32,7 +32,6 @@ export default class Request {
         this._onForbidden = () => {};
 
         this._connection = new Connection();
-        this._connection.setRequest(this);
 
         this._response = null;
         this.key = null;
@@ -74,6 +73,8 @@ export default class Request {
     async get () {
         const url = this.url ?? this.constructor.endpoint;
 
+        this._connection.cancelRunning(this);
+
         this._response = await this._connection.get(
             url,
             this.bodyParameters,
@@ -91,6 +92,8 @@ export default class Request {
      */
     async post (data = {}) {
         const url = this.url ?? this.constructor.endpoint;
+
+        this._connection.cancelRunning(this);
 
         this._response = await this._connection.post(
             url,
@@ -110,6 +113,8 @@ export default class Request {
     async put (data = {}) {
         const url = this.url ?? this.constructor.endpoint;
 
+        this._connection.cancelRunning(this);
+
         this._response = await this._connection.put(
             url,
             { ...data, ...this.bodyParameters },
@@ -125,6 +130,8 @@ export default class Request {
      */
     async delete () {
         const url = this.url ?? this.constructor.endpoint;
+
+        this._connection.cancelRunning(this);
 
         this._response = await this._connection.delete(
             url,
@@ -143,6 +150,8 @@ export default class Request {
      */
     async storeFiles (files = {}, data = {}) {
         const url = this.url ?? this.constructor.endpoint;
+
+        this._connection.cancelRunning(this);
 
         this._connection.setConfig({
             headers: {
