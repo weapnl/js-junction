@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## v0.0.7
 - Request cancel improvements.
 
 ## v0.0.6
