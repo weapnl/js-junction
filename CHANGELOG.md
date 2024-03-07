@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Model post requests.
 
 ## v0.0.7
 - Request cancel improvements.

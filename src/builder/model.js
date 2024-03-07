@@ -118,8 +118,8 @@ export default class Model extends Request {
     async index () {
         this._connection.cancelRunning(this);
 
-        this._response = await this._connection.get(
-            this._queryString(),
+        this._response = await this._connection.post(
+            this._queryString() + '/index',
             this.bodyParameters,
         );
 
@@ -150,8 +150,8 @@ export default class Model extends Request {
 
         this._connection.cancelRunning(this);
 
-        this._response = await this._connection.get(
-            this._queryString(identifier),
+        this._response = await this._connection.post(
+            this._queryString(identifier) + '/show',
             this.bodyParameters,
         );
 
