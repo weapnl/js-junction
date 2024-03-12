@@ -292,20 +292,23 @@ let request = await api.request('users/files')
 ```javascript
 let request = await api.request('users')
     .onSuccess((data) => {
-        // Request successful
+        // Request successful.
     })
     .onUnauthorized((response) => {
-        // Missing or invalid token
+        // Missing or invalid token.
     })
     .onForbidden((response) => {
-        // Access not allowed
+        // Access not allowed.
     })
     .onValidationError((validation) => {
         // validation.message
         // validation.errors
     })
     .onError((response) => {
-        // Any other status code not caught by other callbacks
+        // Any other status code not caught by other callbacks.
+    })
+    .onFinished((response) => {
+        // After the request was finished (cancelled requests excluded).
     })
     .get();
 ```
