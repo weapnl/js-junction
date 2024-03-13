@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Model post requests.
+- Added onFinished callback.
 
 ## v0.0.7
 - Request cancel improvements.
