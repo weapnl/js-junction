@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## v0.0.8
 - Model post requests.
 - Added onFinished callback.
 
