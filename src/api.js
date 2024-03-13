@@ -15,6 +15,7 @@ export default class Api {
         this._onValidationError = () => {};
         this._onUnauthorized = () => {};
         this._onForbidden = () => {};
+        this._onFinished = () => {};
     }
 
     /**
@@ -84,7 +85,8 @@ export default class Api {
             .onError(this._onError)
             .onValidationError(this._onValidationError)
             .onUnauthorized(this._onUnauthorized)
-            .onForbidden(this._onForbidden);
+            .onForbidden(this._onForbidden)
+            .onFinished(this._onFinished);
 
         return request;
     }
@@ -208,6 +210,19 @@ export default class Api {
      */
     onForbidden (callback = () => {}) {
         this._onForbidden = callback;
+
+        return this;
+    }
+
+    /**
+     * Set the default 'onFinished'. Can be overridden in the Request class.
+     *
+     * @param {function(Response)} callback
+     *
+     * @returns {this} The current instance.
+     */
+    onFinished (callback = () => {}) {
+        this._onFinished = callback;
 
         return this;
     }

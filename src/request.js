@@ -30,6 +30,7 @@ export default class Request {
         this._onValidationError = () => {};
         this._onUnauthorized = () => {};
         this._onForbidden = () => {};
+        this._onFinished = () => {};
 
         this._connection = new Connection();
 
@@ -240,38 +241,55 @@ export default class Request {
     }
 
     /**
+     * @param {function(Response)} callback
+     *
+     * @returns {this} The current instance.
+     */
+    onFinished (callback = () => {}) {
+        this._onFinished = callback;
+
+        return this;
+    }
+
+    /**
      * @param {Response} response
      * @param {*} successResponse
      */
     async triggerResponseEvents (response, successResponse = null) {
         if (response.statusCode >= 200 && response.statusCode < 300) {
-            if (! this._onSuccess) return;
+            if (this._onSuccess) {
+                await this._onSuccess(...[successResponse, response.data].filter((value) => !! value));
+            }
+        } else {
+            switch (response.statusCode) {
+                case 401:
+                    if (this._onUnauthorized) await this._onUnauthorized(response);
+                    break;
+                case 403:
+                    if (this._onForbidden) await this._onForbidden(response);
+                    break;
+                case 422:
+                    const validation = {
+                        message: response.validation.message,
+                        errors: {},
+                    };
 
-            return await this._onSuccess(...[successResponse, response.data].filter((value) => !! value));
+                    _.each(response.validation.errors, (value, key) => {
+                        return _.set(validation.errors, key, value);
+                    });
+
+                    if (this._onValidationError) await this._onValidationError(validation);
+                    break;
+                default:
+                    if (this._onError) await this._onError(response);
+                    break;
+            }
         }
 
-        switch (response.statusCode) {
-            case 401:
-                if (this._onUnauthorized) await this._onUnauthorized(response);
-                break;
-            case 403:
-                if (this._onForbidden) await this._onForbidden(response);
-                break;
-            case 422:
-                const validation = {
-                    message: response.validation.message,
-                    errors: {},
-                };
-
-                _.each(response.validation.errors, (value, key) => {
-                    return _.set(validation.errors, key, value);
-                });
-
-                if (this._onValidationError) await this._onValidationError(validation);
-                break;
-            default:
-                if (this._onError) await this._onError(response);
-                break;
+        if (response.statusCode !== 0) {
+            if (this._onFinished) {
+                await this._onFinished(response);
+            }
         }
     }
 
