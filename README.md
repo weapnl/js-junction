@@ -45,20 +45,20 @@ class User extends Model {
 // Create a new user.
 const user = new User();
 user.name = 'John';
-user.store();
+user.store(); // Or .save()
 
 // Retrieve a user.
-const user = User.show(1);
+const user = new User().show(1);
 
 // Update the user.
 user.name = 'Jane';
-user.update();
+user.update(); // Or .save()
 
 // Delete the user.
 user.destroy();
 
 // List all users.
-const users = User.index();
+const users = new User().index();
 ```
 
 ## Usage
@@ -215,6 +215,7 @@ To create a new record or update an existing one, you can use the `.save()` meth
 **Cloning a model's instance.**
 ```javascript
 // Return a clone of the model
+const user = new User().show(1);
 const clonedUser = user.clone();
 ```
 
