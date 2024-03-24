@@ -60,6 +60,19 @@ export default class Request {
     }
 
     /**
+     * @param {string} responseType
+     *
+     * @returns {this} The current instance.
+     */
+    setResponseType (responseType) {
+        this._connection.setConfig({
+            responseType,
+        });
+
+        return this;
+    }
+
+    /**
      * @returns {this} The current instance.
      */
     cancel () {

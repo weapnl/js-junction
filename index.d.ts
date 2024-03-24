@@ -88,6 +88,7 @@ declare class Request extends Mixins {
     onForbidden(callback?: (response: Response) => void): this;
     triggerResponseEvents(response: Response, successResponse?: any): Promise<void>;
     customParameters(parameters?: object): this;
+    setResponseType(responseType: string): this;
     setApi(api: Api): this;
 }
 

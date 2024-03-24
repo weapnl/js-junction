@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added option to set a custom response type.
 
 ## v0.0.8
 - Model post requests.
