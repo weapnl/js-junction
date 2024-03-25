@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- Added option to set a config to an request.
+- Added option to override the config of an request.
 
 ## v0.0.8
 - Model post requests.
