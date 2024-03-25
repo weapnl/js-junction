@@ -60,14 +60,12 @@ export default class Request {
     }
 
     /**
-     * @param {string} responseType
+     * @param {object} config
      *
      * @returns {this} The current instance.
      */
-    setResponseType (responseType) {
-        this._connection.setConfig({
-            responseType,
-        });
+    setConfig (config) {
+        this._connection.setConfig(_.merge(this._connection.getConfig(), config));
 
         return this;
     }
@@ -167,7 +165,7 @@ export default class Request {
 
         this._connection.cancelRunning(this);
 
-        this._connection.setConfig({
+        this.setConfig({
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
