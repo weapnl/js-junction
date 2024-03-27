@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added the body parameters to the post request.
 
 ## v0.0.8
 - Model post requests.
