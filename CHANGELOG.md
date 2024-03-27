@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- Requests object to array, bugfix.
+- Updated the requests variable from a object to an array.
 
 ## v0.0.8
 - Model post requests.
