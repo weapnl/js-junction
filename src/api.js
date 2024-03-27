@@ -6,7 +6,7 @@ export default class Api {
     constructor () {
         this.setHeader('X-Requested-With', 'XMLHttpRequest');
 
-        this._requests = {};
+        this._requests = [];
 
         this.host('/').suffix('');
 
