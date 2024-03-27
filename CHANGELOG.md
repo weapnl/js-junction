@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added option to override the config of an request.
 - Added the body parameters to the post request.
 - Updated the requests variable from a object to an array.
 
