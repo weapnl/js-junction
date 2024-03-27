@@ -109,7 +109,7 @@ export default class Request {
 
         this._response = await this._connection.post(
             url,
-            data,
+            { ...data, ...this.bodyParameters },
         );
 
         await this.triggerResponseEvents(this._response);
