@@ -25,6 +25,10 @@ export default class Connection {
         this._api.cancelRunning(request);
     }
 
+    getConfig () {
+        return this._config;
+    }
+
     setConfig (config) {
         this._config = config;
     }

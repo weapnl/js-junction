@@ -2,8 +2,13 @@
 
 ## Unreleased
 
-## v0.0.9
+## v0.0.10
 - Updated Readme.md
+
+## v0.0.9
+- Added option to override the config of an request.
+- Added the body parameters to the post request.
+- Updated the requests variable from a object to an array.
 
 ## v0.0.8
 - Model post requests.

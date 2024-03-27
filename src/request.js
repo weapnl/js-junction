@@ -60,6 +60,17 @@ export default class Request {
     }
 
     /**
+     * @param {object} config
+     *
+     * @returns {this} The current instance.
+     */
+    setConfig (config) {
+        this._connection.setConfig(_.merge(this._connection.getConfig(), config));
+
+        return this;
+    }
+
+    /**
      * @returns {this} The current instance.
      */
     cancel () {
@@ -98,7 +109,7 @@ export default class Request {
 
         this._response = await this._connection.post(
             url,
-            data,
+            { ...data, ...this.bodyParameters },
         );
 
         await this.triggerResponseEvents(this._response);
@@ -154,7 +165,7 @@ export default class Request {
 
         this._connection.cancelRunning(this);
 
-        this._connection.setConfig({
+        this.setConfig({
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
