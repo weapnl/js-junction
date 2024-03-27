@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Requests object to array, bugfix.
 
 ## v0.0.8
 - Model post requests.
