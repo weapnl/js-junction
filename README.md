@@ -48,7 +48,7 @@ user.name = 'John';
 user.store(); // Or .save()
 
 // Retrieve a user.
-const user = new User().show(1);
+const user = await new User().show(1);
 
 // Update the user.
 user.name = 'Jane';
@@ -58,7 +58,7 @@ user.update(); // Or .save()
 user.destroy();
 
 // List all users.
-const users = new User().index();
+const users = await new User().index();
 ```
 
 ## Usage
@@ -165,7 +165,7 @@ user.name = 'John';
 user.store();
 
 // Retrieve a user.
-const user = new User().show(1);
+const user = await new User().show(1);
 
 // Update the user.
 user.name = 'Jane';
@@ -175,7 +175,7 @@ user.save(); // This will call store() or update() depending on the id of the mo
 user.destroy();
 
 // List all users.
-const users = new User().index();
+const users = await new User().index();
 ```
 
 #### Applying filters and scopes
@@ -215,16 +215,16 @@ To create a new record or update an existing one, you can use the `.save()` meth
 **Cloning a model's instance.**
 ```javascript
 // Return a clone of the model
-const user = new User().show(1);
+const user = await new User().show(1);
 const clonedUser = user.clone();
 ```
 
 **Batch requests**
 ```javascript
-const firstUser = new User().show(1);
+const firstUser = await new User().show(1);
 firstUser.name = 'John';
 
-const secondUser = new User().show(2);
+const secondUser = await new User().show(2);
 secondUser.name = 'Jane';
 
 const batch = await api.batch([
@@ -267,7 +267,7 @@ const request = await api
         // Extra data
     });
 
-const user = new User().show(1);
+const user = await new User().show(1);
 
 const request = await user
     .action('actionName') // It will take the id of the user now, since it is a model. The id is 1 in this case.
@@ -338,7 +338,7 @@ A previously pending request with the same key will be cancelled, and this new r
 
 This is also possible on a model:
 ```javascript
-const user = new User()
+const user = await new User()
         .setKey('get-user')
         .index();
 ```
