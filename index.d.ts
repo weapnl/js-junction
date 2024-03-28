@@ -29,6 +29,7 @@ declare class Api {
     onValidationError(callback?: (validation: any) => void): this;
     onUnauthorized(callback?: (response: AxiosResponse) => void): this;
     onForbidden(callback?: (response: AxiosResponse) => void): this;
+    onFinished(callback?: (response: AxiosResponse) => void): this;
 
     responseInterceptors(
         onSuccess?: (response: AxiosResponse) => void,
@@ -86,6 +87,7 @@ declare class Request extends Mixins {
     onValidationError(callback?: (validation: object) => void): this;
     onUnauthorized(callback?: (response: Response) => void): this;
     onForbidden(callback?: (response: Response) => void): this;
+    onFinished(callback?: (response: Response) => void): this;
     triggerResponseEvents(response: Response, successResponse?: any): Promise<void>;
     customParameters(parameters?: object): this;
     setConfig(config: object): this;
