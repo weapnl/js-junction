@@ -3,6 +3,9 @@
 ## Unreleased
 -  Added onFinished to the index.d.ts file (TS support).
 
+## v0.0.10
+- Updated Readme.md
+
 ## v0.0.9
 - Added option to override the config of an request.
 - Added the body parameters to the post request.
