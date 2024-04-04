@@ -1,8 +1,6 @@
 # Changelog
 
 ## Unreleased
-
-## v0.0.10
 - Updated Readme.md
 
 ## v0.0.9
