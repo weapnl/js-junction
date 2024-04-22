@@ -1,7 +1,8 @@
 # Changelog
 
 ## Unreleased
--  Added onFinished to the index.d.ts file (TS support).
+- Updated Readme.md
+- Added onFinished to the index.d.ts file (TS support).
 
 ## v0.0.9
 - Added option to override the config of an request.
