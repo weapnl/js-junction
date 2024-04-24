@@ -3,7 +3,7 @@
 ## Unreleased
 - Updated Readme.md
 - Added onFinished to the index.d.ts file (TS support).
-- Add support for simple pagination.
+- Added support for simple pagination.
 
 ## v0.0.9
 - Added option to override the config of an request.
