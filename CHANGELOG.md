@@ -3,6 +3,7 @@
 ## Unreleased
 - Updated Readme.md
 - Added onFinished to the index.d.ts file (TS support).
+- Added the option to cancel a request based on the class instance.
 
 ## v0.0.9
 - Added option to override the config of an request.

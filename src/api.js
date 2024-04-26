@@ -57,12 +57,19 @@ export default class Api {
     }
 
     cancelRunning (request) {
-        if (! request.key) {
+        if (! request.key && ! request.classInstance) {
             return;
         }
 
-        this._requests[request.key]?.cancel();
-        this._requests[request.key] = request;
+        const identifier = {
+            key: request.key,
+            classInstance: request.classInstance,
+        };
+
+        _.find(this._requests, identifier)?.cancel();
+        _.remove(this._requests, identifier);
+
+        this._requests.push(request);
     }
 
     /**

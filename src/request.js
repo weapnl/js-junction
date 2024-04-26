@@ -35,10 +35,18 @@ export default class Request {
         this._connection = new Connection();
 
         this._response = null;
+        this.classInstance = null;
         this.key = null;
     }
 
     setKey (key) {
+        this.key = key;
+
+        return this;
+    }
+
+    setUniqueKey (classInstance, key) {
+        this.classInstance = classInstance;
         this.key = key;
 
         return this;
