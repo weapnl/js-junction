@@ -203,7 +203,7 @@ const request = await new User()
     .pluck(['name', 'company.name']) // Only retrieve the given fields 
     .pagination(1, 25) // Paginate 25 per page, page 1
     .pagination(1, 25, 50) // The 3th parameter is a pageForId parameter. This is used to find the correct page for the given id. If the id can not be found, the given page will be used. It will now look for the user with id 50, and returns that page.
-    .simplePagination(1) // You can use this to simply navigate through pages (without receiving the total pages). This can be helpful for large database tables. The 1st parameter is the `items per page` amount.
+    .simplePagination(1, 25) // You can use this to simply navigate through pages (without receiving the total pages). This can be helpful for large database tables. The first parameter is the page number and the second parameter is the `items per page` amount.
     .get();
 ```
 

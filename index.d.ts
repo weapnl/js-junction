@@ -68,7 +68,7 @@ declare class Mixins {
     action(name: string, id?: number): this;
 
     pagination(page: number, perPage?: number, findPageForId?: number | null): this;
-    simplePagination(perPage?: number): this;
+    simplePagination(page: number, perPage?: number): this;
 }
 
 declare class Request extends Mixins {
