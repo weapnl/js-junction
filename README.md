@@ -330,18 +330,28 @@ To do this, you can use the following:
 
 ```javascript
 const request = api
-        .request('users')
-        .setKey('get-users')
-        .get();
+    .request('users')
+    .setKey('get-users')
+    .get();
 ```
 A previously pending request with the same key will be cancelled, and this new request will be executed.
 
 This is also possible on a model:
 ```javascript
 const user = await new User()
-        .setKey('get-user')
-        .index();
+    .setKey('get-user')
+    .index();
 ```
+
+Instead of defining an unique key per request you can also use the `setUniqueKey` method and pass your class instance and (this is not required) a unique key for that class. This way you only need to define a unique key per file, instead of your whole product. You can use it like this:
+```javascript
+const request = api
+    .request('users')
+    .setUniqueKey(this, 'get-users')
+    .get();
+```
+
+if you now use the `get-users` key in another file, the current request will not be canceled because it belongs to your class.
 
 **Set a bearer token**
 
