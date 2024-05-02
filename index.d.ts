@@ -79,6 +79,7 @@ declare class Request extends Mixins {
     post(data?: object): Promise<this>;
     put(data?: object): Promise<this>;
     setKey(key: string): this;
+    setUniqueKey(classInstance: any, key: string): this;
     delete(): Promise<this>;
     storeFiles(files?: object, data?: object): Promise<this>;
     readonly bodyParameters: object;
