@@ -45,7 +45,7 @@ export default class Request {
         return this;
     }
 
-    setUniqueKey (classInstance, key) {
+    setUniqueKey (classInstance, key = null) {
         this.classInstance = classInstance;
         this.key = key;
 
