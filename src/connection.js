@@ -25,6 +25,10 @@ export default class Connection {
         this._api.cancelRunning(request);
     }
 
+    removeRequest (request) {
+        this._api.removeRequest(request);
+    }
+
     getConfig () {
         return this._config;
     }

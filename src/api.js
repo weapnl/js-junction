@@ -56,19 +56,27 @@ export default class Api {
         return url;
     }
 
+    /**
+     * @param {Request} request
+     */
     cancelRunning (request) {
         if (! request.key) {
             return;
         }
 
-        const identifier = {
-            key: request.key,
-        };
+        this._requests[request.key]?.cancel();
+        this._requests[request.key] = request;
+    }
 
-        _.find(this._requests, identifier)?.cancel();
-        _.remove(this._requests, identifier);
+    /**
+     * @param {Request} request
+     */
+    removeRequest (request) {
+        if (! request.key) {
+            return;
+        }
 
-        this._requests.push(request);
+        delete this._requests[request.key];
     }
 
     /**
