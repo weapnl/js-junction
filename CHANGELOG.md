@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## v0.0.10
 - Updated Readme.md
 - Added onFinished to the index.d.ts file (TS support).
 - Remove request from _requests array after the request was finished.
