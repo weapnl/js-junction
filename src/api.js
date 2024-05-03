@@ -61,8 +61,14 @@ export default class Api {
             return;
         }
 
-        this._requests[request.key]?.cancel();
-        this._requests[request.key] = request;
+        const identifier = {
+            key: request.key,
+        };
+
+        _.find(this._requests, identifier)?.cancel();
+        _.remove(this._requests, identifier);
+
+        this._requests.push(request);
     }
 
     /**
