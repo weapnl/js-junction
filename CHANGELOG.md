@@ -3,6 +3,7 @@
 ## Unreleased
 - Updated Readme.md
 - Added onFinished to the index.d.ts file (TS support).
+- Remove request from _requests array after the request was finished.
 - Added support for simple pagination.
 
 ## v0.0.9

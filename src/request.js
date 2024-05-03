@@ -92,6 +92,8 @@ export default class Request {
             this.bodyParameters,
         );
 
+        this._connection.removeRequest(this);
+
         await this.triggerResponseEvents(this._response);
 
         return this;
@@ -111,6 +113,8 @@ export default class Request {
             url,
             { ...data, ...this.bodyParameters },
         );
+
+        this._connection.removeRequest(this);
 
         await this.triggerResponseEvents(this._response);
 
@@ -132,6 +136,8 @@ export default class Request {
             { ...data, ...this.bodyParameters },
         );
 
+        this._connection.removeRequest(this);
+
         await this.triggerResponseEvents(this._response);
 
         return this;
@@ -148,6 +154,8 @@ export default class Request {
         this._response = await this._connection.delete(
             url,
         );
+
+        this._connection.removeRequest(this);
 
         await this.triggerResponseEvents(this._response);
 
@@ -177,6 +185,8 @@ export default class Request {
             `${url}?${this.bodyParameters}`,
             formData,
         );
+
+        this._connection.removeRequest(this);
 
         await this.triggerResponseEvents(this._response);
 
