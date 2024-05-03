@@ -7,7 +7,7 @@ export default class Pagination {
     }
 
     filled () {
-        return this._perPage && (this._page || this._findPageForId || this._simplePagination);
+        return this._perPage && (this._page || this._findPageForId);
     }
 
     page (page) {
