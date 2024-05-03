@@ -123,6 +123,8 @@ export default class Model extends Request {
             this.bodyParameters,
         );
 
+        this._connection.removeRequest(this);
+
         let items;
 
         if (this._response.data) {
@@ -155,6 +157,8 @@ export default class Model extends Request {
             this.bodyParameters,
         );
 
+        this._connection.removeRequest(this);
+
         let item;
 
         if (this._response.data) {
@@ -180,6 +184,8 @@ export default class Model extends Request {
             this._queryString(),
             { ...this._attributes.toJson(this), ...extraData },
         );
+
+        this._connection.removeRequest(this);
 
         let item;
 
@@ -207,6 +213,8 @@ export default class Model extends Request {
             { ...this._attributes.toJson(this), ...extraData },
         );
 
+        this._connection.removeRequest(this);
+
         let item;
 
         if (this._response.data) {
@@ -229,6 +237,8 @@ export default class Model extends Request {
         this._response = await this._connection.delete(
             this._queryString(this._identifier),
         );
+
+        this._connection.removeRequest(this);
 
         await this.triggerResponseEvents(this._response);
 

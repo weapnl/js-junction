@@ -56,6 +56,9 @@ export default class Api {
         return url;
     }
 
+    /**
+     * @param {Request} request
+     */
     cancelRunning (request) {
         if (! request.key) {
             return;
@@ -63,6 +66,17 @@ export default class Api {
 
         this._requests[request.key]?.cancel();
         this._requests[request.key] = request;
+    }
+
+    /**
+     * @param {Request} request
+     */
+    removeRequest (request) {
+        if (! request.key) {
+            return;
+        }
+
+        delete this._requests[request.key];
     }
 
     /**
