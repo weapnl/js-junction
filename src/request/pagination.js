@@ -3,6 +3,7 @@ export default class Pagination {
         this._page = null;
         this._perPage = null;
         this._findPageForId = null;
+        this._simplePagination = false;
     }
 
     filled () {
@@ -21,6 +22,10 @@ export default class Pagination {
         this._findPageForId = id;
     }
 
+    simplePagination (simplePagination) {
+        this._simplePagination = simplePagination;
+    }
+
     toObject () {
         const data = {};
 
@@ -28,6 +33,7 @@ export default class Pagination {
             data.page = this._page;
             data.paginate = this._perPage;
             data.page_for_id = this._findPageForId;
+            data.simple_pagination = this._simplePagination;
         }
 
         return data;
