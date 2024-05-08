@@ -4,6 +4,7 @@
 - Updated Readme.md
 - Added onFinished to the index.d.ts file (TS support).
 - Remove request from _requests array after the request was finished.
+- Request cancelling hotfix.
 
 ## v0.0.9
 - Added option to override the config of an request.
