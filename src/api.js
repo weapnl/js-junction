@@ -76,7 +76,9 @@ export default class Api {
             return;
         }
 
-        delete this._requests[request.key];
+        if (request.response.statusCode !== 0) {
+            delete this._requests[request.key];
+        }
     }
 
     /**

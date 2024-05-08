@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Fixed a bug where cancelled requests would cause issues when cancelling subsequent requests.
 
 ## v0.0.10
 - Updated Readme.md
