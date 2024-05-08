@@ -1,10 +1,13 @@
 # Changelog
 
 ## Unreleased
+- Request cancelling hotfix.
+
+## v0.0.10
 - Updated Readme.md
 - Added onFinished to the index.d.ts file (TS support).
 - Remove request from _requests array after the request was finished.
-- Request cancelling hotfix.
+- Added support for simple pagination.
 
 ## v0.0.9
 - Added option to override the config of an request.

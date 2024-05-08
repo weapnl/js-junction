@@ -12,6 +12,20 @@ const paginationMixin = {
         this._pagination.page(page);
         this._pagination.perPage(perPage);
         this._pagination.findPageForId(findPageForId);
+        this._pagination.simplePagination(false);
+
+        return this;
+    },
+
+    /**
+     * @param {int} page
+     * @param {int} [perPage]
+     * @returns {this}
+     */
+    simplePagination (page, perPage = 25) {
+        this._pagination.page(page);
+        this._pagination.perPage(perPage);
+        this._pagination.simplePagination(true);
 
         return this;
     },
