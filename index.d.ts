@@ -81,7 +81,7 @@ declare class Request extends Mixins {
     put(data?: object): Promise<this>;
     setKey(key: string): this;
     delete(): Promise<this>;
-    storeFiles(files?: object, data?: object): Promise<this>;
+    storeFiles(files?: object, data?: object, url?: string|null): Promise<this>;
     readonly bodyParameters: object;
     onSuccess<T = any>(callback?: (result: T, data: any) => void): this;
     onError(callback?: (response: Response) => void): this;
@@ -112,6 +112,8 @@ export class Model extends Request {
 
     static relations(): JsonMap;
 
+    static mediaCollections(): JsonMap;
+
     static readonly endpoint: string;
 
     readonly _identifier: number | string;
@@ -127,6 +129,8 @@ export class Model extends Request {
     destroy(): Promise<boolean>;
 
     save(extraData?: JsonMap): Promise<Model>;
+
+    upload(files: object, collection: string): Promise<this>;
 
     clone(): Model;
 

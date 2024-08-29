@@ -2,6 +2,7 @@ import Accessors from './properties/accessors';
 import Attributes from './properties/attributes';
 import Counts from './properties/counts';
 import Relations from './properties/relations';
+import MediaCollections from './properties/mediaCollections';
 import Request from '../request';
 
 export default class Model extends Request {
@@ -12,6 +13,7 @@ export default class Model extends Request {
         this._attributes = new Attributes(this);
         this._counts = new Counts(this);
         this._relations = new Relations(this);
+        this._mediaCollections = new MediaCollections(this);
 
         this.setApi(api);
         this.fill(defaults);
@@ -46,6 +48,7 @@ export default class Model extends Request {
             ...this._attributes.toJson(this),
             ...this._counts.toJson(this),
             ...this._relations.toJson(this),
+            ...this._mediaCollections.toJson(this),
         };
     }
 
@@ -93,6 +96,15 @@ export default class Model extends Request {
      * @returns {Object.<any, Object>}
      */
     static relations () {
+        return {};
+    }
+
+     /**
+     * The media collections of the model
+     *
+     * @returns {Object.<any, Object>}
+     */
+    static mediaCollections () {
         return {};
     }
 
@@ -243,6 +255,23 @@ export default class Model extends Request {
         await this.triggerResponseEvents(this._response);
 
         return !! this._response.data;
+    }
+
+    async upload (files, collection) {
+        this._media ??= {};
+
+        if (files.length === 0) {
+            this._media[collection] = {};
+            return;
+        }
+
+        const request = await this.storeFiles({
+            files: _.flatMapDeep(files),
+        }, {}, '/media/upload');
+
+        this._media[collection] = request._response.data;
+
+        return !! request._response.data;
     }
 
     /**

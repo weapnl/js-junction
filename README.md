@@ -371,3 +371,53 @@ api.removeHeader('HEADER NAME HERE'); // Removes the header.
 **Sample response**
 
 After executing a request, the property `response` contains a `Response` object, which has properties `statusCode`, `data` and `validation`.
+
+### Uploading Files with [Spatie Medialibrary](https://spatie.be/docs/laravel-medialibrary/v11/introduction)
+
+#### Step 1: Uploading Files to a Model
+To upload files to a model, use the `upload` function available on the model instance. This function requires two arguments:
+
+1. **Uploaded Files**: An array of files, typically obtained from an input field of `type="file"`.
+2. **Collection Name**: The name of the media [collection](https://spatie.be/docs/laravel-medialibrary/v11/working-with-media-collections/simple-media-collections) to which the files should be attached. This corresponds to the collection defined in your Laravel model.
+
+**Example Usage:**
+```js
+// Retrieve the employee model instance (e.g., Employee with ID 3)
+const employee = Employee.show(3);
+
+// Upload the files to the 'IdentityFiles' collection
+employee.upload(uploadedFiles, 'IdentityFiles');
+```
+
+In this example, `uploadedFiles` is an array of files from an input field, and `'IdentityFiles'` is the name of the media collection on the `Employee` model where these files should be stored.
+
+#### Step 2: Handling the Uploaded Files
+Once the `upload` function is called, the files are sent to the API. The API temporarily stores these files in the media library and returns the media IDs associated with each file. These media IDs are automatically set on the model instance.
+
+#### Step 3: Saving the Model with Attached Media
+After uploading the files, you can call the `.save()` method on the model instance. This step finalizes the process by permanently attaching the uploaded files to the specified media collection on the model. The media IDs stored on the model are now linked to the correct collection in the database.
+
+**Example of Saving the Model:**
+```js
+// Save the employee model with the uploaded files attached
+employee.save();
+```
+
+When the `save()` method is invoked, the model is updated or created (depending on whether it was previously persisted), and the uploaded media files are attached to the correct collection as defined in the earlier steps.
+
+#### Advanced Usage: Uploading Files in Nested Structures
+If your model contains nested relationships, such as an `Employee` model with a `Contact` relationship, you can still use the `upload` function to attach files to the appropriate collection within the nested structure.
+
+**Example with Nested Structure:**
+```js
+// Retrieve the employee model instance
+const employee = Employee.show(3);
+
+// Upload a profile picture to the 'ProfilePicture' collection within the 'Contact' relationship
+employee.contact.upload(uploadedFiles, 'ProfilePicture');
+
+// Save the employee model, including the nested contact with the attached profile picture
+employee.save();
+```
+
+In this scenario, the uploaded files are linked to the `ProfilePicture` collection within the `Contact` relationship of the `Employee` model. When the `save()` method is called, the files are properly attached within the nested structure.
