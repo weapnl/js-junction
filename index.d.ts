@@ -130,7 +130,7 @@ export class Model extends Request {
 
     save(extraData?: JsonMap): Promise<Model>;
 
-    upload(files: object, collection: string): Promise<this>;
+    upload(files: object|object[], collection: string): Promise<this>;
 
     clone(): Model;
 

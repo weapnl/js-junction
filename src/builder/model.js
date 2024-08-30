@@ -257,21 +257,30 @@ export default class Model extends Request {
         return !! this._response.data;
     }
 
+    /**
+     * Upload an temporary media file to the API.
+     *
+     * @param {array|File} [files] The uploaded file or files.
+     * @param {string} [collection] The name of the file collection.
+     *
+     * @returns {array} The received media ids.
+     */
     async upload (files, collection) {
         this._media ??= {};
+        const filesArray = Array.isArray(files) ? files : [files];
 
-        if (files.length === 0) {
+        if (filesArray.length === 0) {
             this._media[collection] = {};
             return;
         }
 
         const request = await this.storeFiles({
-            files: _.flatMapDeep(files),
+            files: _.flatMapDeep(filesArray),
         }, {}, '/media/upload');
 
         this._media[collection] = request._response.data;
 
-        return !! request._response.data;
+        return request._response.data;
     }
 
     /**

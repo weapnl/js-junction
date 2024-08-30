@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added the Temporary Media Upload functionality.
 
 ## v0.0.11
 - Fixed a bug where cancelled requests would cause issues when cancelling subsequent requests.
