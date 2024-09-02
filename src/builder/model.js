@@ -194,7 +194,7 @@ export default class Model extends Request {
 
         this._response = await this._connection.post(
             this._queryString(),
-            { ...this._attributes.toJson(this), ...extraData },
+            { ...this._attributes.toJson(this), ...this._mediaCollections.toJson(this), ...extraData },
         );
 
         this._connection.removeRequest(this);
@@ -222,7 +222,7 @@ export default class Model extends Request {
 
         this._response = await this._connection.put(
             this._queryString(this._identifier),
-            { ...this._attributes.toJson(this), ...extraData },
+            { ...this._attributes.toJson(this), ...this._mediaCollections.toJson(this), ...extraData },
         );
 
         this._connection.removeRequest(this);

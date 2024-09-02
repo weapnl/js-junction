@@ -193,6 +193,12 @@ export default class Request {
 
         this._connection.removeRequest(this);
 
+        this.setConfig({
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
         await this.triggerResponseEvents(this._response);
 
         return this;
