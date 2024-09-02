@@ -12,6 +12,7 @@ This package has support for Typescript (TS).
     - [Creating Models](#creating-models)
     - [Performing Requests](#performing-requests)
     - [Applying Filters and Scopes](#applying-filters-and-scopes)
+    - [Uploading Files with Spatie Medialibrary](#uploading-files-with-spatie-medialibrary)
 
 ## Installation
 ```bash
