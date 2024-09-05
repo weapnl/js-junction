@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## v0.1.0
 - Added the Temporary Media Upload functionality.
 
 ## v0.0.11
