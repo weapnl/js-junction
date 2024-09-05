@@ -267,7 +267,7 @@ export default class Model extends Request {
      */
     async upload (files, collection) {
         this._media ??= {};
-        const filesArray = Array.isArray(files) ? files : [files];
+        const filesArray = (Array.isArray(files) ? files : [files]).filter((value) => value !== null);
 
         if (filesArray.length === 0) {
             this._media[collection] = {};

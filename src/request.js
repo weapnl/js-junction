@@ -170,7 +170,7 @@ export default class Request {
      * @returns {this} The current instance.
      */
     async storeFiles (files = {}, data = {}, url = null) {
-        let queryUrl = url ?? (this.url ?? this.constructor.endpoint);
+        let queryUrl = url ?? this.url ?? this.constructor.endpoint;
 
         this._connection.cancelRunning(this);
 
@@ -182,9 +182,9 @@ export default class Request {
 
         const formData = this._createFormData(_.merge({}, files, data));
 
-        queryUrl = ! _.isEmpty(this.bodyParameters)
-            ? `${queryUrl}?${this.bodyParameters}`
-            : queryUrl;
+        if (! _.isEmpty(this.bodyParameters)) {
+            queryUrl = `${queryUrl}?${this.bodyParameters}`;
+        }
 
         this._response = await this._connection.post(
             queryUrl,
