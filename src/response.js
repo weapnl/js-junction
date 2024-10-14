@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default class Response {
     constructor () {
         this._axiosResponse = null;
@@ -29,6 +31,15 @@ export default class Response {
      */
     get isFinished () {
         return this._axiosResponse !== null;
+    }
+
+    /**
+     * Check whether the request was cancelled.
+     *
+     * @returns {boolean}
+     */
+    get isCancelled () {
+        return axios.isCancel(this._axiosError);
     }
 
     /**
