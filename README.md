@@ -316,6 +316,18 @@ let request = await api.request('users')
     .get();
 ```
 
+It's possible to clear the currently set callbacks on a request.
+
+```javascript
+request
+    .clearOnSuccessCallbacks()
+    .clearOnUnauthorizedCallbacks()
+    .clearOnForbiddenCallbacks()
+    .clearOnValidationErrorCallbacks()
+    .clearOnErrorCallbacks()
+    .clearOnFinishedCallbacks();
+```
+
 **Cancel requests**
 
 If you want to cancel a pending request, you can do the following:
