@@ -25,12 +25,12 @@ export default class Request {
         this._pagination = new Pagination();
         this._customParameters = [];
 
-        this._onSuccess = () => {};
-        this._onError = () => {};
-        this._onValidationError = () => {};
-        this._onUnauthorized = () => {};
-        this._onForbidden = () => {};
-        this._onFinished = () => {};
+        this._onSuccessCallbacks = [];
+        this._onErrorCallbacks = [];
+        this._onValidationErrorCallbacks = [];
+        this._onUnauthorizedCallbacks = [];
+        this._onForbiddenCallbacks = [];
+        this._onFinishedCallbacks = [];
 
         this._connection = new Connection();
 
@@ -223,7 +223,7 @@ export default class Request {
      * @returns {this} The current instance.
      */
     onSuccess (callback = () => {}) {
-        this._onSuccess = callback;
+        this._onSuccessCallbacks.push(callback);
 
         return this;
     }
@@ -234,7 +234,7 @@ export default class Request {
      * @returns {this} The current instance.
      */
     onError (callback = () => {}) {
-        this._onError = callback;
+        this._onErrorCallbacks.push(callback);
 
         return this;
     }
@@ -245,7 +245,7 @@ export default class Request {
      * @returns {this} The current instance.
      */
     onValidationError (callback = () => {}) {
-        this._onValidationError = callback;
+        this._onValidationErrorCallbacks.push(callback);
 
         return this;
     }
@@ -256,7 +256,7 @@ export default class Request {
      * @returns {this} The current instance.
      */
     onUnauthorized (callback = () => {}) {
-        this._onUnauthorized = callback;
+        this._onUnauthorizedCallbacks.push(callback);
 
         return this;
     }
@@ -267,7 +267,7 @@ export default class Request {
      * @returns {this} The current instance.
      */
     onForbidden (callback = () => {}) {
-        this._onForbidden = callback;
+        this._onForbiddenCallbacks.push(callback);
 
         return this;
     }
@@ -278,7 +278,73 @@ export default class Request {
      * @returns {this} The current instance.
      */
     onFinished (callback = () => {}) {
-        this._onFinished = callback;
+        this._onFinishedCallbacks.push(callback);
+
+        return this;
+    }
+
+    /**
+     * Clears all `onSuccess` callbacks.
+     *
+     * @returns {this} The current instance.
+     */
+    clearOnSuccessCallbacks () {
+        this._onSuccessCallbacks = [];
+
+        return this;
+    }
+
+    /**
+     * Clears all `onError` callbacks.
+     *
+     * @returns {this} The current instance.
+     */
+    clearOnErrorCallbacks () {
+        this._onErrorCallbacks = [];
+
+        return this;
+    }
+
+    /**
+     * Clears all `onValidationError` callbacks.
+     *
+     * @returns {this} The current instance.
+     */
+    clearOnValidationErrorCallbacks () {
+        this._onValidationErrorCallbacks = [];
+
+        return this;
+    }
+
+    /**
+     * Clears all `onUnauthorized` callbacks.
+     *
+     * @returns {this} The current instance.
+     */
+    clearOnUnauthorizedCallbacks () {
+        this._onUnauthorizedCallbacks = [];
+
+        return this;
+    }
+
+    /**
+     * Clears all `onForbidden` callbacks.
+     *
+     * @returns {this} The current instance.
+     */
+    clearOnForbiddenCallbacks () {
+        this._onForbiddenCallbacks = [];
+
+        return this;
+    }
+
+    /**
+     * Clears all `onFinished` callbacks.
+     *
+     * @returns {this} The current instance.
+     */
+    clearOnFinishedCallbacks () {
+        this._onFinishedCallbacks = [];
 
         return this;
     }
@@ -288,17 +354,21 @@ export default class Request {
      * @param {*} successResponse
      */
     async triggerResponseEvents (response, successResponse = null) {
+        function executeCallbacks(callbacks, ...data) {
+            return Promise.all(callbacks.map(async callback => {
+                await callback(...data);
+            }))
+        }
+
         if (response.statusCode >= 200 && response.statusCode < 300) {
-            if (this._onSuccess) {
-                await this._onSuccess(...[successResponse, response.data].filter((value) => !! value));
-            }
+            await executeCallbacks(this._onSuccessCallbacks, ...[successResponse, response.data].filter((value) => !! value));
         } else {
             switch (response.statusCode) {
                 case 401:
-                    if (this._onUnauthorized) await this._onUnauthorized(response);
+                    await executeCallbacks(this._onUnauthorizedCallbacks, response);
                     break;
                 case 403:
-                    if (this._onForbidden) await this._onForbidden(response);
+                    await executeCallbacks(this._onForbiddenCallbacks, response);
                     break;
                 case 422:
                     const validation = {
@@ -310,18 +380,16 @@ export default class Request {
                         return _.set(validation.errors, key, value);
                     });
 
-                    if (this._onValidationError) await this._onValidationError(validation);
+                    await executeCallbacks(this._onValidationErrorCallbacks, validation);
                     break;
                 default:
-                    if (this._onError) await this._onError(response);
+                    await executeCallbacks(this._onErrorCallbacks, response);
                     break;
             }
         }
 
         if (response.statusCode !== 0) {
-            if (this._onFinished) {
-                await this._onFinished(response);
-            }
+            await executeCallbacks(this._onFinishedCallbacks, response);
         }
     }
 

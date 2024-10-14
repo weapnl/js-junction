@@ -10,12 +10,12 @@ export default class Api {
 
         this.host('/').suffix('');
 
-        this._onSuccess = () => {};
-        this._onError = () => {};
-        this._onValidationError = () => {};
-        this._onUnauthorized = () => {};
-        this._onForbidden = () => {};
-        this._onFinished = () => {};
+        this._onSuccess = null;
+        this._onError = null;
+        this._onValidationError = null;
+        this._onUnauthorized = null;
+        this._onForbidden = null;
+        this._onFinished = null;
     }
 
     /**
@@ -96,13 +96,14 @@ export default class Api {
         const request = new Request();
 
         request.setUrl(uri)
-            .setApi(this)
-            .onSuccess(this._onSuccess)
-            .onError(this._onError)
-            .onValidationError(this._onValidationError)
-            .onUnauthorized(this._onUnauthorized)
-            .onForbidden(this._onForbidden)
-            .onFinished(this._onFinished);
+            .setApi(this);
+
+        if (this._onSuccess) request.onSuccess(this._onSuccess);
+        if (this._onError) request.onError(this._onError);
+        if (this._onValidationError) request.onValidationError(this._onValidationError);
+        if (this._onUnauthorized) request.onUnauthorized(this._onUnauthorized);
+        if (this._onForbidden) request.onForbidden(this._onForbidden);
+        if (this._onFinished) request.onFinished(this._onFinished);
 
         return request;
     }
