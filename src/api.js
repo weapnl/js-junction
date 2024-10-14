@@ -167,7 +167,7 @@ export default class Api {
     }
 
     /**
-     * Set the default 'onSuccess'. Can be overridden in the Request class.
+     * Set the default 'onSuccess' event handler.
      *
      * @param {function(Response.data)} callback
      *
@@ -180,7 +180,7 @@ export default class Api {
     }
 
     /**
-     * Set the default 'onError'. Can be overridden in the Request class.
+     * Set the default 'onError' event handler.
      *
      * @param {function(Response)} callback
      *
@@ -193,7 +193,7 @@ export default class Api {
     }
 
     /**
-     * Set the default 'onValidationError'. Can be overridden in the Request class.
+     * Set the default 'onValidationError' event handler.
      *
      * @param {function(Response.validation)} callback
      *
@@ -206,7 +206,7 @@ export default class Api {
     }
 
     /**
-     * Set the default 'onUnauthorized'. Can be overridden in the Request class.
+     * Set the default 'onUnauthorized' event handler.
      *
      * @param {function(Response)} callback
      *
@@ -219,7 +219,7 @@ export default class Api {
     }
 
     /**
-     * Set the default 'onForbidden'. Can be overridden in the Request class.
+     * Set the default 'onForbidden' event handler.
      *
      * @param {function(Response)} callback
      *
@@ -232,7 +232,7 @@ export default class Api {
     }
 
     /**
-     * Set the default 'onFinished'. Can be overridden in the Request class.
+     * Set the default 'onFinished' event handler.
      *
      * @param {function(Response)} callback
      *
