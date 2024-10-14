@@ -313,6 +313,9 @@ let request = await api.request('users')
     .onFinished((response) => {
         // After the request was finished (a request is finished if it returned a response).
     })
+    .onCancelled((response) => {
+        // When a request is cancelled.
+    })
     .get();
 ```
 
@@ -325,7 +328,8 @@ request
     .clearOnForbiddenCallbacks()
     .clearOnValidationErrorCallbacks()
     .clearOnErrorCallbacks()
-    .clearOnFinishedCallbacks();
+    .clearOnFinishedCallbacks()
+    .clearOnCancelledCallbacks();
 ```
 
 **Cancel requests**
