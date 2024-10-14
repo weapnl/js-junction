@@ -16,6 +16,7 @@ export default class Api {
         this._onUnauthorized = null;
         this._onForbidden = null;
         this._onFinished = null;
+        this._onCancelled = null;
     }
 
     /**
@@ -104,6 +105,7 @@ export default class Api {
         if (this._onUnauthorized) request.onUnauthorized(this._onUnauthorized);
         if (this._onForbidden) request.onForbidden(this._onForbidden);
         if (this._onFinished) request.onFinished(this._onFinished);
+        if (this._onCancelled) request.onCancelled(this._onCancelled);
 
         return request;
     }
@@ -240,6 +242,19 @@ export default class Api {
      */
     onFinished (callback = () => {}) {
         this._onFinished = callback;
+
+        return this;
+    }
+
+    /**
+     * Set the default 'onCancelled' event handler.
+     *
+     * @param {function(Response)} callback
+     *
+     * @returns {this} The current instance.
+     */
+    onCancelled (callback = () => {}) {
+        this._onCancelled = callback;
 
         return this;
     }

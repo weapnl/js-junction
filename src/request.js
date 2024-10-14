@@ -31,6 +31,7 @@ export default class Request {
         this._onUnauthorizedCallbacks = [];
         this._onForbiddenCallbacks = [];
         this._onFinishedCallbacks = [];
+        this._onCancelledCallbacks = [];
 
         this._connection = new Connection();
 
@@ -284,6 +285,17 @@ export default class Request {
     }
 
     /**
+     * @param {function(Response)} callback
+     *
+     * @returns {this} The current instance.
+     */
+    onCancelled (callback = () => {}) {
+        this._onCancelledCallbacks.push(callback);
+
+        return this;
+    }
+
+    /**
      * Clears all `onSuccess` callbacks.
      *
      * @returns {this} The current instance.
@@ -350,6 +362,17 @@ export default class Request {
     }
 
     /**
+     * Clears all `onCancelled` callbacks.
+     *
+     * @returns {this} The current instance.
+     */
+    clearOnCancelledCallbacks () {
+        this._onCancelledCallbacks = [];
+
+        return this;
+    }
+
+    /**
      * @param {Response} response
      * @param {*} successResponse
      */
@@ -390,6 +413,10 @@ export default class Request {
 
         if (response.isFinished) {
             await executeCallbacks(this._onFinishedCallbacks, response);
+        }
+
+        if (response.isCancelled) {
+            await executeCallbacks(this._onCancelledCallbacks, response);
         }
     }
 
