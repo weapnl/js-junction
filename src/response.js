@@ -1,33 +1,62 @@
 export default class Response {
     constructor () {
         this._axiosResponse = null;
-
-        this.statusCode = null;
+        this._axiosError = null;
 
         this.data = null;
-
         this.validation = null;
     }
 
+    /**
+     * @deprecated Use `isFailed` instead.
+     * @returns {boolean}
+     */
     get failed () {
+        return this.isFailed;
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    get isFailed () {
         return this.statusCode >= 400;
     }
 
-    set (statusCode, axiosResponse) {
-        this._axiosResponse = axiosResponse;
+    /**
+     * Check whether the request is finished and returned a response.
+     *
+     * @returns {boolean}
+     */
+    get isFinished () {
+        return this._axiosResponse !== null;
+    }
 
-        this.statusCode = statusCode;
+    /**
+     * @returns {Number} The HTTP response status code.
+     */
+    get statusCode () {
+        return this._axiosResponse?.status;
+    }
+
+    setAxiosResponse(axiosResponse) {
+        this._axiosResponse = axiosResponse;
 
         switch (this.statusCode) {
             case 200:
+            case 400:
                 this.data = this._axiosResponse.data;
                 break;
-            case 400:
-                this.data = this._axiosResponse.response.data;
-                break;
             case 422:
-                this.validation = this._axiosResponse.response.data;
+                this.validation = this._axiosResponse.data;
                 break;
+        }
+    }
+
+    setAxiosError (axiosError) {
+        this._axiosError = axiosError;
+
+        if (axiosError.response) {
+            this.setAxiosResponse(axiosError.response);
         }
     }
 }

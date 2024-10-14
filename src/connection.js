@@ -78,18 +78,12 @@ export default class Connection {
 
         await request
             .then((axiosResponse) => {
-                response.set(axiosResponse.status, axiosResponse);
+                response.setAxiosResponse(axiosResponse);
             })
-            .catch((error) => {
+            .catch((axiosError) => {
                 this.failed = true;
 
-                let statusCode = 0;
-
-                if (error.response) {
-                    statusCode = error.response.status;
-                }
-
-                response.set(statusCode, error);
+                response.setAxiosError(axiosError);
             })
             .finally(() => {
                 this.running = false;

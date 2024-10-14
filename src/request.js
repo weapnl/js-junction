@@ -388,7 +388,7 @@ export default class Request {
             }
         }
 
-        if (response.statusCode !== 0) {
+        if (response.isFinished) {
             await executeCallbacks(this._onFinishedCallbacks, response);
         }
     }
