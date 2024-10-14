@@ -3,6 +3,8 @@
 ## Unreleased
 - Added functionality to add the same callback on a request multiple times.
   - ⚠️ With the old functionality setting a callback on a request would overwrite the globally defined callback. This is no longer the case, as both the global and request callbacks will be executed.
+- Improved how axios responses are handled.
+  - ⚠️ Deprecated `failed` getter on the `Response` class in favor of a new `isFailed` getter. 
 
 ## v0.1.0
 - Added the Temporary Media Upload functionality.
