@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## v0.1.1
 - Added functionality to add the same callback on a request multiple times.
   - ⚠️ With the old functionality setting a callback on a request would overwrite the globally defined callback. This is no longer the case, as both the global and request callbacks will be executed.
 - Improved how axios responses are handled.
