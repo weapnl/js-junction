@@ -5,6 +5,7 @@
   - ⚠️ With the old functionality setting a callback on a request would overwrite the globally defined callback. This is no longer the case, as both the global and request callbacks will be executed.
 - Improved how axios responses are handled.
   - ⚠️ Deprecated `failed` getter on the `Response` class in favor of a new `isFailed` getter. 
+- Added `onCancelled` method on `Api` and `Response` classes.
 - Updated the `docker-compose.yml` file to use the `node:22` image.
 
 ## v0.1.0
