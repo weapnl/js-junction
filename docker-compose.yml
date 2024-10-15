@@ -1,14 +1,19 @@
 services:
   dev:
-    image: registry.weap.nl:5005/docker/npmnginx:8.1
+    image: node:22
+    user: "node"
+    working_dir: /home/node/app
     volumes:
-      - ./:/var/www
-      - ../Shared:/var/shared
+      - ./:/home/node/app
     command: "tail -f /dev/null"
 
-  build:
-    image: registry.weap.nl:5005/docker/npmnginx:8.1
+  build-prod:
+    image: node:22
+    profiles: [prod]
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
     volumes:
-      - ./:/var/www
-      - ../Shared:/var/shared
+      - ./:/home/node/app
     command: "npm run prod"

@@ -6,6 +6,7 @@
 - Improved how axios responses are handled.
   - ⚠️ Deprecated `failed` getter on the `Response` class in favor of a new `isFailed` getter. 
 - Added `onCancelled` method on `Api` and `Response` classes.
+- Updated the `docker-compose.yml` file to use the `node:22` image.
 
 ## v0.1.0
 - Added the Temporary Media Upload functionality.
