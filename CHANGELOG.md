@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Updated the `docker-compose.yml` file to use the `node:22` image.
 
 ## v0.1.0
 - Added the Temporary Media Upload functionality.
