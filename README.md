@@ -311,7 +311,7 @@ let request = await api.request('users')
         // Any other status code not caught by other callbacks.
     })
     .onFinished((response) => {
-        // After the request was finished (cancelled requests excluded).
+        // After the request was finished (a request is finished if it returned a response).
     })
     .get();
 ```

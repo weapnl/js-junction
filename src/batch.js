@@ -8,11 +8,11 @@ export default class Batch {
     }
 
     get successfulRequests () {
-        return _.filter(this._requests, ['response.failed', false]);
+        return _.filter(this._requests, ['response.isFailed', false]);
     }
 
     get failedRequests () {
-        return _.filter(this._requests, ['response.failed', true]);
+        return _.filter(this._requests, ['response.isFailed', true]);
     }
 
     async get () { return this.execute('get'); }
