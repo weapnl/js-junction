@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## v0.1.2
 - Fixed a bug where not all subsequent requests would be cancelled.
 
 ## v0.1.1
