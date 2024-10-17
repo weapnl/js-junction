@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Fixed a bug where not all subsequent requests would be cancelled.
 
 ## v0.1.1
 - Added functionality to add the same callback on a request multiple times.
