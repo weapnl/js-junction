@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Added functionality to add the same global callback on an api multiple times.
+- Callbacks (response events) are now cleared from the Request after a request has been made and the response events have been called once.
 
 ## v0.1.2
 - Fixed a bug where not all subsequent requests would be cancelled.
