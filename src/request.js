@@ -8,12 +8,15 @@ import actionMixin from './mixins/actionMixin';
 import filterMixin from './mixins/filterMixin';
 import modifierMixin from './mixins/modifierMixin';
 import paginationMixin from './mixins/paginationMixin';
+import responseEventsMixin from './mixins/responseEventsMixin';
+import ResponseEventsHandler from './response/responseEventsHandler';
 
 /**
  * @mixes actionMixin
  * @mixes filterMixin
  * @mixes modifierMixin
  * @mixes paginationMixin
+ * @mixes responseEventsMixin
  */
 export default class Request {
     constructor () {
@@ -24,14 +27,7 @@ export default class Request {
         this._modifiers = new Modifiers();
         this._pagination = new Pagination();
         this._customParameters = [];
-
-        this._onSuccessCallbacks = [];
-        this._onErrorCallbacks = [];
-        this._onValidationErrorCallbacks = [];
-        this._onUnauthorizedCallbacks = [];
-        this._onForbiddenCallbacks = [];
-        this._onFinishedCallbacks = [];
-        this._onCancelledCallbacks = [];
+        this._initResponseEvents();
 
         this._connection = new Connection();
 
@@ -95,7 +91,10 @@ export default class Request {
 
         this._connection.removeRequest(this);
 
-        await this.triggerResponseEvents(this._response);
+        const responseEventsHandler = this._createResponseEventsHandler();
+        await responseEventsHandler.triggerResponseEvents(this._response);
+
+        this.clearAllCallbacks();
 
         return this;
     }
@@ -117,7 +116,10 @@ export default class Request {
 
         this._connection.removeRequest(this);
 
-        await this.triggerResponseEvents(this._response);
+        const responseEventsHandler = this._createResponseEventsHandler();
+        await responseEventsHandler.triggerResponseEvents(this._response);
+
+        this.clearAllCallbacks();
 
         return this;
     }
@@ -139,7 +141,10 @@ export default class Request {
 
         this._connection.removeRequest(this);
 
-        await this.triggerResponseEvents(this._response);
+        const responseEventsHandler = this._createResponseEventsHandler();
+        await responseEventsHandler.triggerResponseEvents(this._response);
+
+        this.clearAllCallbacks();
 
         return this;
     }
@@ -158,7 +163,10 @@ export default class Request {
 
         this._connection.removeRequest(this);
 
-        await this.triggerResponseEvents(this._response);
+        const responseEventsHandler = this._createResponseEventsHandler();
+        await responseEventsHandler.triggerResponseEvents(this._response);
+
+        this.clearAllCallbacks();
 
         return this;
     }
@@ -200,7 +208,10 @@ export default class Request {
             },
         });
 
-        await this.triggerResponseEvents(this._response);
+        const responseEventsHandler = this._createResponseEventsHandler();
+        await responseEventsHandler.triggerResponseEvents(this._response);
+
+        this.clearAllCallbacks();
 
         return this;
     }
@@ -219,205 +230,15 @@ export default class Request {
     }
 
     /**
-     * @param {function(Response.data)} callback
-     *
-     * @returns {this} The current instance.
+     * @returns {ResponseEventsHandler}
+     * @private
      */
-    onSuccess (callback = () => {}) {
-        this._onSuccessCallbacks.push(callback);
+    _createResponseEventsHandler () {
+        const responseEventsHandler = new ResponseEventsHandler();
+        responseEventsHandler.addResponseEvents(this._connection._api._responseEvents);
+        responseEventsHandler.addResponseEvents(this._responseEvents);
 
-        return this;
-    }
-
-    /**
-     * @param {function(Response)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onError (callback = () => {}) {
-        this._onErrorCallbacks.push(callback);
-
-        return this;
-    }
-
-    /**
-     * @param {function(Response.validation)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onValidationError (callback = () => {}) {
-        this._onValidationErrorCallbacks.push(callback);
-
-        return this;
-    }
-
-    /**
-     * @param {function(Response)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onUnauthorized (callback = () => {}) {
-        this._onUnauthorizedCallbacks.push(callback);
-
-        return this;
-    }
-
-    /**
-     * @param {function(Response)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onForbidden (callback = () => {}) {
-        this._onForbiddenCallbacks.push(callback);
-
-        return this;
-    }
-
-    /**
-     * @param {function(Response)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onFinished (callback = () => {}) {
-        this._onFinishedCallbacks.push(callback);
-
-        return this;
-    }
-
-    /**
-     * @param {function(Response)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onCancelled (callback = () => {}) {
-        this._onCancelledCallbacks.push(callback);
-
-        return this;
-    }
-
-    /**
-     * Clears all `onSuccess` callbacks.
-     *
-     * @returns {this} The current instance.
-     */
-    clearOnSuccessCallbacks () {
-        this._onSuccessCallbacks = [];
-
-        return this;
-    }
-
-    /**
-     * Clears all `onError` callbacks.
-     *
-     * @returns {this} The current instance.
-     */
-    clearOnErrorCallbacks () {
-        this._onErrorCallbacks = [];
-
-        return this;
-    }
-
-    /**
-     * Clears all `onValidationError` callbacks.
-     *
-     * @returns {this} The current instance.
-     */
-    clearOnValidationErrorCallbacks () {
-        this._onValidationErrorCallbacks = [];
-
-        return this;
-    }
-
-    /**
-     * Clears all `onUnauthorized` callbacks.
-     *
-     * @returns {this} The current instance.
-     */
-    clearOnUnauthorizedCallbacks () {
-        this._onUnauthorizedCallbacks = [];
-
-        return this;
-    }
-
-    /**
-     * Clears all `onForbidden` callbacks.
-     *
-     * @returns {this} The current instance.
-     */
-    clearOnForbiddenCallbacks () {
-        this._onForbiddenCallbacks = [];
-
-        return this;
-    }
-
-    /**
-     * Clears all `onFinished` callbacks.
-     *
-     * @returns {this} The current instance.
-     */
-    clearOnFinishedCallbacks () {
-        this._onFinishedCallbacks = [];
-
-        return this;
-    }
-
-    /**
-     * Clears all `onCancelled` callbacks.
-     *
-     * @returns {this} The current instance.
-     */
-    clearOnCancelledCallbacks () {
-        this._onCancelledCallbacks = [];
-
-        return this;
-    }
-
-    /**
-     * @param {Response} response
-     * @param {*} successResponse
-     */
-    async triggerResponseEvents (response, successResponse = null) {
-        function executeCallbacks(callbacks, ...data) {
-            return Promise.all(callbacks.map(async callback => {
-                await callback(...data);
-            }))
-        }
-
-        if (response.statusCode >= 200 && response.statusCode < 300) {
-            await executeCallbacks(this._onSuccessCallbacks, ...[successResponse, response.data].filter((value) => !! value));
-        } else {
-            switch (response.statusCode) {
-                case 401:
-                    await executeCallbacks(this._onUnauthorizedCallbacks, response);
-                    break;
-                case 403:
-                    await executeCallbacks(this._onForbiddenCallbacks, response);
-                    break;
-                case 422:
-                    const validation = {
-                        message: response.validation.message,
-                        errors: {},
-                    };
-
-                    _.each(response.validation.errors, (value, key) => {
-                        return _.set(validation.errors, key, value);
-                    });
-
-                    await executeCallbacks(this._onValidationErrorCallbacks, validation);
-                    break;
-                default:
-                    await executeCallbacks(this._onErrorCallbacks, response);
-                    break;
-            }
-        }
-
-        if (response.isFinished) {
-            await executeCallbacks(this._onFinishedCallbacks, response);
-        }
-
-        if (response.isCancelled) {
-            await executeCallbacks(this._onCancelledCallbacks, response);
-        }
+        return responseEventsHandler;
     }
 
     /**
@@ -488,3 +309,4 @@ Object.assign(Request.prototype, actionMixin);
 Object.assign(Request.prototype, filterMixin);
 Object.assign(Request.prototype, modifierMixin);
 Object.assign(Request.prototype, paginationMixin);
+Object.assign(Request.prototype, responseEventsMixin);
