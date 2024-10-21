@@ -2,6 +2,11 @@ import Request from './request';
 import Batch from './batch';
 import axios from 'axios';
 
+import responseEventsMixin from './mixins/responseEventsMixin';
+
+/**
+ * @mixes responseEventsMixin
+ */
 export default class Api {
     constructor () {
         this.setHeader('X-Requested-With', 'XMLHttpRequest');
@@ -10,13 +15,7 @@ export default class Api {
 
         this.host('/').suffix('');
 
-        this._onSuccess = null;
-        this._onError = null;
-        this._onValidationError = null;
-        this._onUnauthorized = null;
-        this._onForbidden = null;
-        this._onFinished = null;
-        this._onCancelled = null;
+        this._initResponseEvents();
     }
 
     /**
@@ -96,16 +95,9 @@ export default class Api {
 
         const request = new Request();
 
-        request.setUrl(uri)
+        request
+            .setUrl(uri)
             .setApi(this);
-
-        if (this._onSuccess) request.onSuccess(this._onSuccess);
-        if (this._onError) request.onError(this._onError);
-        if (this._onValidationError) request.onValidationError(this._onValidationError);
-        if (this._onUnauthorized) request.onUnauthorized(this._onUnauthorized);
-        if (this._onForbidden) request.onForbidden(this._onForbidden);
-        if (this._onFinished) request.onFinished(this._onFinished);
-        if (this._onCancelled) request.onCancelled(this._onCancelled);
 
         return request;
     }
@@ -169,97 +161,6 @@ export default class Api {
     }
 
     /**
-     * Set the default 'onSuccess' event handler.
-     *
-     * @param {function(Response.data)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onSuccess (callback = () => {}) {
-        this._onSuccess = callback;
-
-        return this;
-    }
-
-    /**
-     * Set the default 'onError' event handler.
-     *
-     * @param {function(Response)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onError (callback = () => {}) {
-        this._onError = callback;
-
-        return this;
-    }
-
-    /**
-     * Set the default 'onValidationError' event handler.
-     *
-     * @param {function(Response.validation)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onValidationError (callback = () => {}) {
-        this._onValidationError = callback;
-
-        return this;
-    }
-
-    /**
-     * Set the default 'onUnauthorized' event handler.
-     *
-     * @param {function(Response)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onUnauthorized (callback = () => {}) {
-        this._onUnauthorized = callback;
-
-        return this;
-    }
-
-    /**
-     * Set the default 'onForbidden' event handler.
-     *
-     * @param {function(Response)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onForbidden (callback = () => {}) {
-        this._onForbidden = callback;
-
-        return this;
-    }
-
-    /**
-     * Set the default 'onFinished' event handler.
-     *
-     * @param {function(Response)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onFinished (callback = () => {}) {
-        this._onFinished = callback;
-
-        return this;
-    }
-
-    /**
-     * Set the default 'onCancelled' event handler.
-     *
-     * @param {function(Response)} callback
-     *
-     * @returns {this} The current instance.
-     */
-    onCancelled (callback = () => {}) {
-        this._onCancelled = callback;
-
-        return this;
-    }
-
-    /**
      * @param {function(Response)} onSuccess
      * @param {function(Error)} onError
      *
@@ -279,3 +180,5 @@ export default class Api {
         return this;
     }
 }
+
+Object.assign(Api.prototype, responseEventsMixin);

@@ -290,8 +290,9 @@ let request = await api.request('users/files')
     });
 ```
 
-**Custom callbacks**
-
+**Response events**
+- You can set global response events which will be called for every request by adding the event callback on the Api class.
+- You can set response events directly on requests so they will only be called for that specific request. After executing the request, they will be automatically reset.
 ```javascript
 let request = await api.request('users')
     .onSuccess((data) => {

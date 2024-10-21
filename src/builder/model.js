@@ -145,7 +145,11 @@ export default class Model extends Request {
             });
         }
 
-        await this.triggerResponseEvents(this._response, items);
+        const responseEventsHandler = this._createResponseEventsHandler();
+        responseEventsHandler.setOnSuccessData(items);
+        await responseEventsHandler.triggerResponseEvents(this._response);
+
+        this.clearAllCallbacks();
 
         return items;
     }
@@ -177,7 +181,11 @@ export default class Model extends Request {
             item = this.constructor.fromJson(this._response.data);
         }
 
-        await this.triggerResponseEvents(this._response, item);
+        const responseEventsHandler = this._createResponseEventsHandler();
+        responseEventsHandler.setOnSuccessData(item);
+        await responseEventsHandler.triggerResponseEvents(this._response);
+
+        this.clearAllCallbacks();
 
         return item;
     }
@@ -205,7 +213,11 @@ export default class Model extends Request {
             item = this.constructor.fromJson(this._response.data);
         }
 
-        await this.triggerResponseEvents(this._response, item);
+        const responseEventsHandler = this._createResponseEventsHandler();
+        responseEventsHandler.setOnSuccessData(item);
+        await responseEventsHandler.triggerResponseEvents(this._response);
+
+        this.clearAllCallbacks();
 
         return item;
     }
@@ -233,7 +245,11 @@ export default class Model extends Request {
             item = this.constructor.fromJson(this._response.data);
         }
 
-        await this.triggerResponseEvents(this._response, item);
+        const responseEventsHandler = this._createResponseEventsHandler();
+        responseEventsHandler.setOnSuccessData(item);
+        await responseEventsHandler.triggerResponseEvents(this._response);
+
+        this.clearAllCallbacks();
 
         return item;
     }
@@ -252,7 +268,10 @@ export default class Model extends Request {
 
         this._connection.removeRequest(this);
 
-        await this.triggerResponseEvents(this._response);
+        const responseEventsHandler = this._createResponseEventsHandler();
+        await responseEventsHandler.triggerResponseEvents(this._response);
+
+        this.clearAllCallbacks();
 
         return !! this._response.data;
     }
