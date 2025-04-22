@@ -75,7 +75,8 @@ export default class ResponseEventsHandler {
     async _executeOnSuccessCallbacks (response) {
         await this._executeCallbacks(
             this._responseEventsList.flatMap((responseEvent) => responseEvent._onSuccessCallbacks),
-            ...[this._onSuccessData, response.data].filter((value) => !! value)
+            ...[this._onSuccessData, response.data].filter((value) => !! value),
+            response
         );
     }
 
@@ -103,7 +104,8 @@ export default class ResponseEventsHandler {
 
         await this._executeCallbacks(
             this._responseEventsList.flatMap((responseEvent) => responseEvent._onValidationErrorCallbacks),
-            validation
+            validation,
+            response
         );
     }
 

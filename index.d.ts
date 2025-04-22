@@ -24,9 +24,9 @@ declare class Api {
     setHeader(key: string, value: string): void;
     removeHeader(key: string): void;
 
-    onSuccess(callback?: (data: any) => void): this;
+    onSuccess(callback?: (data: any, response: AxiosResponse) => void): this;
     onError(callback?: (response: AxiosResponse) => void): this;
-    onValidationError(callback?: (validation: any) => void): this;
+    onValidationError(callback?: (validation: any, response: AxiosResponse) => void): this;
     onUnauthorized(callback?: (response: AxiosResponse) => void): this;
     onForbidden(callback?: (response: AxiosResponse) => void): this;
     onFinished(callback?: (response: AxiosResponse) => void): this;

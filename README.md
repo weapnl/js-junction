@@ -248,7 +248,7 @@ const users = api.request('users').get();
 
 // Custom POST request
 await api.request('users')
-    .onSuccess((response) => {
+    .onSuccess((data, response) => {
         // Handle success
     })
     .post({
@@ -295,7 +295,7 @@ let request = await api.request('users/files')
 - You can set response events directly on requests so they will only be called for that specific request. After executing the request, they will be automatically reset.
 ```javascript
 let request = await api.request('users')
-    .onSuccess((data) => {
+    .onSuccess((data, response) => {
         // Request successful.
     })
     .onUnauthorized((response) => {
@@ -304,7 +304,7 @@ let request = await api.request('users')
     .onForbidden((response) => {
         // Access not allowed.
     })
-    .onValidationError((validation) => {
+    .onValidationError((validation, response) => {
         // validation.message
         // validation.errors
     })
