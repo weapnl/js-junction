@@ -83,9 +83,9 @@ declare class Request extends Mixins {
     delete(): Promise<this>;
     storeFiles(files?: object, data?: object, url?: string|null): Promise<this>;
     readonly bodyParameters: object;
-    onSuccess<T = any>(callback?: (result: T, data: any) => void): this;
+    onSuccess<T = any>(callback?: (result: T, data: any, response: Response) => void): this;
     onError(callback?: (response: Response) => void): this;
-    onValidationError(callback?: (validation: object) => void): this;
+    onValidationError(callback?: (validation: object, response: Response) => void): this;
     onUnauthorized(callback?: (response: Response) => void): this;
     onForbidden(callback?: (response: Response) => void): this;
     onFinished(callback?: (response: Response) => void): this;
