@@ -24,9 +24,9 @@ declare class Api {
     setHeader(key: string, value: string): void;
     removeHeader(key: string): void;
 
-    onSuccess(callback?: (data: any) => void): this;
+    onSuccess(callback?: (data: any, response: AxiosResponse) => void): this;
     onError(callback?: (response: AxiosResponse) => void): this;
-    onValidationError(callback?: (validation: any) => void): this;
+    onValidationError(callback?: (validation: any, response: AxiosResponse) => void): this;
     onUnauthorized(callback?: (response: AxiosResponse) => void): this;
     onForbidden(callback?: (response: AxiosResponse) => void): this;
     onFinished(callback?: (response: AxiosResponse) => void): this;
@@ -83,9 +83,9 @@ declare class Request extends Mixins {
     delete(): Promise<this>;
     storeFiles(files?: object, data?: object, url?: string|null): Promise<this>;
     readonly bodyParameters: object;
-    onSuccess<T = any>(callback?: (result: T, data: any) => void): this;
+    onSuccess<T = any>(callback?: (result: T, data: any, response: Response) => void): this;
     onError(callback?: (response: Response) => void): this;
-    onValidationError(callback?: (validation: object) => void): this;
+    onValidationError(callback?: (validation: object, response: Response) => void): this;
     onUnauthorized(callback?: (response: Response) => void): this;
     onForbidden(callback?: (response: Response) => void): this;
     onFinished(callback?: (response: Response) => void): this;
