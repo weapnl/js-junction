@@ -202,7 +202,12 @@ export default class Model extends Request {
 
         this._response = await this._connection.post(
             this._queryString(),
-            { ...this._attributes.toJson(this), ...this._mediaCollections.toJson(this), ...extraData },
+            {
+                ...this._attributes.toJson(this),
+                ...this._mediaCollections.toJson(this),
+                ..._.merge(...this._customParameters),
+                ...extraData,
+            },
         );
 
         this._connection.removeRequest(this);
@@ -234,7 +239,12 @@ export default class Model extends Request {
 
         this._response = await this._connection.put(
             this._queryString(this._identifier),
-            { ...this._attributes.toJson(this), ...this._mediaCollections.toJson(this), ...extraData },
+            {
+                ...this._attributes.toJson(this),
+                ...this._mediaCollections.toJson(this),
+                ..._.merge(...this._customParameters),
+                ...extraData,
+            },
         );
 
         this._connection.removeRequest(this);
@@ -257,13 +267,19 @@ export default class Model extends Request {
     /**
      * Delete the current model.
      *
+     * @param {Object} [extraData] Extra data to send to the API
+     *
      * @returns {boolean} Whether the deletion was successful.
      */
-    async destroy () {
+    async destroy (extraData = {}) {
         this._connection.cancelRunning(this);
 
         this._response = await this._connection.delete(
             this._queryString(this._identifier),
+            {
+                ..._.merge(...this._customParameters),
+                ...extraData,
+            },
         );
 
         this._connection.removeRequest(this);
