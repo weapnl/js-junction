@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## v0.2.0
 - Added `data` propery to `delete` function of a Request to allow sending json data in the delete request.
 - Added `extraData` property to `destroy` function of a Model to allow sending extra json data in the delete request.
 - Now also sending custom parameters of a request in the `store`, `update` and `destroy` functions of a Model.

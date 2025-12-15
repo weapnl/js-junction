@@ -80,7 +80,7 @@ declare class Request extends Mixins {
     post(data?: object): Promise<this>;
     put(data?: object): Promise<this>;
     setKey(key: string): this;
-    delete(): Promise<this>;
+    delete(data?: object): Promise<this>;
     storeFiles(files?: object, data?: object, url?: string|null): Promise<this>;
     readonly bodyParameters: object;
     onSuccess<T = any>(callback?: (result: T, data: any, response: Response) => void): this;
@@ -126,7 +126,7 @@ export class Model extends Request {
 
     update(extraData?: JsonMap): Promise<Model>;
 
-    destroy(): Promise<boolean>;
+    destroy(extraData?: JsonMap): Promise<boolean>;
 
     save(extraData?: JsonMap): Promise<Model>;
 
