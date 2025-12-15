@@ -150,15 +150,18 @@ export default class Request {
     }
 
     /**
+     * @param {Object} data
+     *
      * @returns {this} The current instance.
      */
-    async delete () {
+    async delete (data = {}) {
         const url = this.url ?? this.constructor.endpoint;
 
         this._connection.cancelRunning(this);
 
         this._response = await this._connection.delete(
             url,
+            { ...data, ...this.bodyParameters },
         );
 
         this._connection.removeRequest(this);

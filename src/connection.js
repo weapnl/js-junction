@@ -49,12 +49,12 @@ export default class Connection {
         return this._execute(query, 'post', data);
     }
 
-    async put (query, params) {
-        return this._execute(query, 'put', params);
+    async put (query, data) {
+        return this._execute(query, 'put', data);
     }
 
-    async delete (query) {
-        return this._execute(query, 'delete');
+    async delete (query, data) {
+        return this._execute(query, 'delete', data);
     }
 
     async _execute (url, method, data) {
