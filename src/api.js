@@ -12,6 +12,7 @@ export default class Api {
         this.setHeader('X-Requested-With', 'XMLHttpRequest');
 
         this._requests = [];
+        this._maxUploadSize = null;
 
         this.host('/').suffix('');
 
@@ -25,6 +26,21 @@ export default class Api {
      */
     host (host) {
         this._host = host;
+
+        return this;
+    }
+
+    /**
+     * Set the maximum upload size in bytes per request.
+     * When set, file uploads will be chunked into multiple requests
+     * so that no single request exceeds this limit.
+     *
+     * @param {number} bytes
+     *
+     * @returns {this} The current instance.
+     */
+    maxUploadSize (bytes) {
+        this._maxUploadSize = bytes;
 
         return this;
     }

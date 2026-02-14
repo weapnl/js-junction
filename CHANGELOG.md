@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added `maxUploadSize` option on the `Api` class to automatically chunk file uploads across multiple requests when the total size exceeds the configured limit.
 
 ## v0.2.0
 - Added `data` propery to `delete` function of a Request to allow sending json data in the delete request.
