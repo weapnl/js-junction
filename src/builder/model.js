@@ -303,8 +303,9 @@ export default class Model extends Request {
     async upload (files, collection) {
         this._media ??= {};
         const filesArray = (Array.isArray(files) ? files : [files]).filter((value) => value !== null);
+        const hasFiles = _.some(filesArray, (file) => file instanceof File);
 
-        if (filesArray.length === 0) {
+        if (filesArray.length === 0 || ! hasFiles) {
             this._media[collection] = {};
             return;
         }
