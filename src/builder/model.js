@@ -303,17 +303,16 @@ export default class Model extends Request {
     async upload (files, collection) {
         this._media ??= {};
         const filesArray = (Array.isArray(files) ? files : [files]).filter((value) => value !== null);
-        const hasFiles = _.some(filesArray, (file) => file instanceof File);
+        const flatFiles = _.flatMapDeep(filesArray).filter((file) => file instanceof File);
 
-        if (filesArray.length === 0 || ! hasFiles) {
+        if (flatFiles.length === 0) {
             this._media[collection] = {};
             return;
         }
 
-        const flatFiles = _.flatMapDeep(filesArray);
-        const maxUploadSize = this._connection._api?._maxUploadSize;
+        const chunkSize = this._connection.getChunkUploadSize();
 
-        const chunks = maxUploadSize ? this._chunkFilesBySize(flatFiles, maxUploadSize) : [flatFiles];
+        const chunks = chunkSize ? this._chunkFilesBySize(flatFiles, chunkSize) : [flatFiles];
 
         let allResponseData = [];
 

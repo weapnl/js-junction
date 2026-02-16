@@ -33,6 +33,10 @@ export default class Connection {
         return this._config;
     }
 
+    getChunkUploadSize () {
+        return this._api?._chunkUploadSize ?? null;
+    }
+
     setConfig (config) {
         this._config = config;
     }

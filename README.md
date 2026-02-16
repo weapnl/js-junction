@@ -443,20 +443,19 @@ In this scenario, the uploaded files are linked to the `ProfilePicture` collecti
 
 ### Chunked Uploads
 
-When uploading multiple files via the `upload` method, the total combined size of all files may exceed the server's maximum upload limit. To handle this, you can configure a maximum upload size on the API instance. Files will then automatically be split across multiple requests, ensuring each request stays within the configured limit.
+When uploading multiple files via the `upload` method, the total combined size may exceed the server's limit, or you may want to split large batches into smaller requests. Use `chunkUploadsBySize` to split files across multiple requests automatically.
 
-**Setting the maximum upload size:**
+**Configuring chunk size:**
 ```js
-api.maxUploadSize(10 * 1024 * 1024); // 10 MB
+api.chunkUploadsBySize(10 * 1024 * 1024); // 10 MB per request
 ```
 
-**Resetting the maximum upload size:**
+**Resetting (single request for all files):**
 ```js
-api.maxUploadSize(null); // (default behavior)
+api.chunkUploadsBySize(null); // default behavior
 ```
 
 **How it works:**
-- When `maxUploadSize` is set, the `upload` method will group files into chunks where the total file size per chunk does not exceed the configured limit.
-- Each chunk is uploaded in a separate request, and the response data from all chunks is combined automatically.
-- A single file that exceeds the limit on its own will still be sent as its own request.
-- When `maxUploadSize` is not set, all files are uploaded in a single request (default behavior).
+- When set, the `upload` method groups files into chunks where the total file size per chunk does not exceed the configured size.
+- Each chunk is uploaded in a separate request; response data is combined automatically.
+- A single file that exceeds the size on its own is sent as its own request.
