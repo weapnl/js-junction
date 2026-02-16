@@ -12,6 +12,7 @@ export default class Api {
         this.setHeader('X-Requested-With', 'XMLHttpRequest');
 
         this._requests = [];
+        this._chunkUploadSize = null;
 
         this.host('/').suffix('');
 
@@ -25,6 +26,20 @@ export default class Api {
      */
     host (host) {
         this._host = host;
+
+        return this;
+    }
+
+    /**
+     * Chunk file uploads into multiple requests when total size exceeds the given size.
+     * Useful when the API has a max upload limit, or to split large batches into smaller requests.
+     *
+     * @param {number} bytes Maximum total file size per request in bytes.
+     *
+     * @returns {this} The current instance.
+     */
+    chunkUploadsBySize (bytes) {
+        this._chunkUploadSize = bytes;
 
         return this;
     }

@@ -9,6 +9,7 @@ declare class Api {
     constructor();
 
     host(host: string): this;
+    chunkUploadsBySize(bytes: number): this;
     suffix(suffix: string): this;
     readonly baseUrl: string;
 

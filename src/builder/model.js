@@ -302,20 +302,69 @@ export default class Model extends Request {
      */
     async upload (files, collection) {
         this._media ??= {};
-        const filesArray = (Array.isArray(files) ? files : [files]).filter((value) => value !== null);
+        files = _.flatMapDeep(Array.isArray(files) ? files : [files]).filter((value) => value instanceof File);
 
-        if (filesArray.length === 0) {
+        if (files.length === 0) {
             this._media[collection] = {};
             return;
         }
 
-        const request = await this.storeFiles({
-            files: _.flatMapDeep(filesArray),
-        }, {}, '/media/upload');
+        const chunkSize = this._connection.getChunkUploadSize();
 
-        this._media[collection] = request._response.data;
+        const chunks = chunkSize ? this._chunkFilesBySize(files, chunkSize) : [files];
 
-        return request._response.data;
+        let allResponseData = [];
+
+        for (const chunk of chunks) {
+            const request = await this.storeFiles({
+                files: chunk,
+            }, {}, '/media/upload');
+
+            if (request._response.data) {
+                allResponseData = allResponseData.concat(
+                    _.castArray(request._response.data),
+                );
+            }
+        }
+
+        this._media[collection] = allResponseData;
+
+        return allResponseData;
+    }
+
+    /**
+     * Split files into chunks that don't exceed the given max size.
+     * A single file that exceeds the limit will still be sent as its own chunk.
+     *
+     * @param {File[]} files
+     * @param {number} maxSize Maximum total file size per chunk in bytes.
+     *
+     * @returns {File[][]} Array of file arrays (chunks).
+     * @private
+     */
+    _chunkFilesBySize (files, maxSize) {
+        const chunks = [];
+        let currentChunk = [];
+        let currentSize = 0;
+
+        for (const file of files) {
+            const fileSize = file.size || 0;
+
+            if (currentChunk.length > 0 && currentSize + fileSize > maxSize) {
+                chunks.push(currentChunk);
+                currentChunk = [];
+                currentSize = 0;
+            }
+
+            currentChunk.push(file);
+            currentSize += fileSize;
+        }
+
+        if (currentChunk.length > 0) {
+            chunks.push(currentChunk);
+        }
+
+        return chunks;
     }
 
     /**

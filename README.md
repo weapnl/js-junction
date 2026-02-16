@@ -13,6 +13,7 @@ This package has support for Typescript (TS).
     - [Performing Requests](#performing-requests)
     - [Applying Filters and Scopes](#applying-filters-and-scopes)
     - [Uploading Files with Spatie Medialibrary](#uploading-files-with-spatie-medialibrary)
+    - [Chunked Uploads](#chunked-uploads)
 
 ## Installation
 ```bash
@@ -439,3 +440,22 @@ employee.save();
 ```
 
 In this scenario, the uploaded files are linked to the `ProfilePicture` collection within the `Contact` relationship of the `Employee` model. When the `save()` method is called, the files are properly attached within the nested structure.
+
+### Chunked Uploads
+
+When uploading multiple files via the `upload` method, the total combined size may exceed the server's limit, or you may want to split large batches into smaller requests. Use `chunkUploadsBySize` to split files across multiple requests automatically.
+
+**Configuring chunk size:**
+```js
+api.chunkUploadsBySize(10 * 1024 * 1024); // 10 MB per request
+```
+
+**Resetting (single request for all files):**
+```js
+api.chunkUploadsBySize(null); // default behavior
+```
+
+**How it works:**
+- When set, the `upload` method groups files into chunks where the total file size per chunk does not exceed the configured size.
+- Each chunk is uploaded in a separate request; response data is combined automatically.
+- A single file that exceeds the size on its own is sent as its own request.
