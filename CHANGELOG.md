@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## v0.3.0
 - Added `chunkUploadsBySize` option on the `Api` class to automatically chunk file uploads across multiple requests when the total size exceeds the configured size.
 
 ## v0.2.0
