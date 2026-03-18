@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+-  Clear file input components automatically after successful store/update by invoking cleanup callbacks registered during media upload.
 
 ## v0.3.0
 - Added `chunkUploadsBySize` option on the `Api` class to automatically chunk file uploads across multiple requests when the total size exceeds the configured size.
