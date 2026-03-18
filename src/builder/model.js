@@ -305,7 +305,7 @@ export default class Model extends Request {
     async upload (files, collection) {
         this._media ??= {};
 
-        // Extract clear callback
+        // Extract clear callback from the files array (if present).
         const clearCallback = typeof files?._clearCallback === 'function' ? files._clearCallback : null;
 
         if (clearCallback) {
