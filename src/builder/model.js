@@ -299,14 +299,20 @@ export default class Model extends Request {
      *
      * @param {array|File} [files] The uploaded file or files.
      * @param {string} [collection] The name of the file collection.
+     * @param {Object} [options] Upload options.
+     * @param {Function} [options.onClear] Callback invoked after a successful save to clear the file input.
      *
      * @returns {array} The received media ids.
      */
-    async upload (files, collection) {
+    async upload (files, collection, options = {}) {
         this._media ??= {};
 
-        // Extract clear callback
-        const clearCallback = typeof files?._clearCallback === 'function' ? files._clearCallback : null;
+        // Resolve clear callback: explicit onClear option takes priority, then _clearCallback on the files array.
+        const clearCallback = typeof options.onClear === 'function'
+            ? options.onClear
+            : typeof files?._clearCallback === 'function'
+                ? files._clearCallback
+                : null;
 
         if (clearCallback) {
             this._pendingMediaClearCallbacks ??= new Map();
