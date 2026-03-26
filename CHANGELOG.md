@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added `onProgress` option to the `upload` method for tracking upload progress across chunked requests.
 
 ## v0.3.0
 - Added `chunkUploadsBySize` option on the `Api` class to automatically chunk file uploads across multiple requests when the total size exceeds the configured size.
