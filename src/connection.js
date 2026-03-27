@@ -49,8 +49,8 @@ export default class Connection {
         return this._execute(query, 'get', params);
     }
 
-    async post (query, data) {
-        return this._execute(query, 'post', data);
+    async post (query, data, options = {}) {
+        return this._execute(query, 'post', data, options);
     }
 
     async put (query, data) {
@@ -61,7 +61,7 @@ export default class Connection {
         return this._execute(query, 'delete', data);
     }
 
-    async _execute (url, method, data) {
+    async _execute (url, method, data, options = {}) {
         this.running = true;
 
         if (! _.startsWith(url, '/')) {
@@ -76,6 +76,10 @@ export default class Connection {
             }),
             signal: (this._abortController = new AbortController()).signal,
         };
+
+        if (options.onUploadProgress) {
+            config.onUploadProgress = options.onUploadProgress;
+        }
 
         const request = axios(Object.assign(config, this._config));
         const response = new Response();

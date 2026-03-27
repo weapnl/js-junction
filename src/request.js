@@ -181,7 +181,7 @@ export default class Request {
      *
      * @returns {this} The current instance.
      */
-    async storeFiles (files = {}, data = {}, url = null) {
+    async storeFiles (files = {}, data = {}, url = null, options = {}) {
         let queryUrl = url ?? this.url ?? this.constructor.endpoint;
 
         this._connection.cancelRunning(this);
@@ -201,6 +201,7 @@ export default class Request {
         this._response = await this._connection.post(
             queryUrl,
             formData,
+            { onUploadProgress: options.onUploadProgress },
         );
 
         this._connection.removeRequest(this);
