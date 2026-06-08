@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## v0.4.0
 - Bumped dependencies which fix vulnerability issues.
 - Removed deprecated babel dependencies and replaced them with maintained packages.
 
