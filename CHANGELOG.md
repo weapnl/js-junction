@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Bumped dependencies which fix vulnerability issues.
+- Removed deprecated babel dependencies and replaced them with maintained packages.
 
 ## v0.3.0
 - Added `chunkUploadsBySize` option on the `Api` class to automatically chunk file uploads across multiple requests when the total size exceeds the configured size.
