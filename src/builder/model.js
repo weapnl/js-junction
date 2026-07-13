@@ -297,10 +297,12 @@ export default class Model extends Request {
      *
      * @param {array|File} [files] The uploaded file or files.
      * @param {string} [collection] The name of the file collection.
+     * @param {Object} [options] Upload options.
+     * @param {Function} [options.onProgress] Callback invoked with upload progress (0-100).
      *
      * @returns {array} The received media ids.
      */
-    async upload (files, collection) {
+    async upload (files, collection, options = {}) {
         this._media ??= {};
         files = _.flatMapDeep(Array.isArray(files) ? files : [files]).filter((value) => value instanceof File);
 
@@ -315,10 +317,28 @@ export default class Model extends Request {
 
         let allResponseData = [];
 
-        for (const chunk of chunks) {
+        const totalSize = files.reduce((sum, f) => sum + (f.size || 0), 0);
+        let loadedSoFar = 0;
+
+        for (let i = 0; i < chunks.length; i++) {
+            const chunkFiles = chunks[i];
+            const chunkTotalSize = chunkFiles.reduce((sum, f) => sum + (f.size || 0), 0);
+
             const request = await this.storeFiles({
-                files: chunk,
-            }, {}, '/media/upload');
+                files: chunkFiles,
+            }, {}, '/media/upload', {
+                onUploadProgress: options.onProgress
+                    ? (event) => {
+                        const chunkLoaded = event.loaded || 0;
+                        const totalLoaded = loadedSoFar + chunkLoaded;
+                        const percent = totalSize > 0 ? Math.round((totalLoaded / totalSize) * 100) : 0;
+
+                        options.onProgress(Math.min(percent, 100));
+                    }
+                    : undefined,
+            });
+
+            loadedSoFar += chunkTotalSize;
 
             if (request._response.data) {
                 allResponseData = allResponseData.concat(

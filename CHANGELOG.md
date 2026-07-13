@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added `onProgress` option to the `upload` method for tracking upload progress across chunked requests.
 
 ## v0.4.0
 - Bumped dependencies which fix vulnerability issues.

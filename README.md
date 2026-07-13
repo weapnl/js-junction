@@ -410,6 +410,18 @@ employee.upload(uploadedFiles, 'IdentityFiles');
 
 In this example, `uploadedFiles` is an array of files from an input field, and `'IdentityFiles'` is the name of the media collection on the `Employee` model where these files should be stored.
 
+**Tracking upload progress:**
+
+You can pass an optional third argument with an `onProgress` callback to track the upload progress. The callback receives a percentage value (0-100) that accounts for progress across all chunks when using chunked uploads.
+
+```js
+employee.upload(uploadedFiles, 'IdentityFiles', {
+    onProgress: (percent) => {
+        console.log(`Upload progress: ${percent}%`);
+    },
+});
+```
+
 #### Step 2: Handling the Uploaded Files
 Once the `upload` function is called, the files are sent to the API. The API temporarily stores these files in the media library and returns the media IDs associated with each file. These media IDs are automatically set on the model instance.
 
