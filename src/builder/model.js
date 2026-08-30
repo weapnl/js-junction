@@ -222,6 +222,7 @@ export default class Model extends Request {
         responseEventsHandler.setOnSuccessData(item);
         await responseEventsHandler.triggerResponseEvents(this._response);
 
+        this._clearMediaAfterSave();
         this.clearAllCallbacks();
 
         return item;
@@ -259,6 +260,7 @@ export default class Model extends Request {
         responseEventsHandler.setOnSuccessData(item);
         await responseEventsHandler.triggerResponseEvents(this._response);
 
+        this._clearMediaAfterSave();
         this.clearAllCallbacks();
 
         return item;
@@ -302,6 +304,15 @@ export default class Model extends Request {
      */
     async upload (files, collection) {
         this._media ??= {};
+
+        // Extract clear callback from the files array (if present).
+        const clearCallback = typeof files?._clearCallback === 'function' ? files._clearCallback : null;
+
+        if (clearCallback) {
+            this._pendingMediaClearCallbacks ??= new Map();
+            this._pendingMediaClearCallbacks.set(collection, clearCallback);
+        }
+
         files = _.flatMapDeep(Array.isArray(files) ? files : [files]).filter((value) => value instanceof File);
 
         if (files.length === 0) {
@@ -309,7 +320,9 @@ export default class Model extends Request {
             return;
         }
 
-        const chunkSize = this._connection.getChunkUploadSize();
+        const chunkSize = typeof this._connection.getChunkUploadSize === 'function'
+            ? this._connection.getChunkUploadSize()
+            : null;
 
         const chunks = chunkSize ? this._chunkFilesBySize(files, chunkSize) : [files];
 
@@ -328,6 +341,14 @@ export default class Model extends Request {
         }
 
         this._media[collection] = allResponseData;
+
+        // Also register globally so it fires when saving through a different model.
+        if (clearCallback && allResponseData.length) {
+            Model._globalMediaCallbacks.set(
+                JSON.stringify(allResponseData),
+                clearCallback,
+            );
+        }
 
         return allResponseData;
     }
@@ -368,6 +389,55 @@ export default class Model extends Request {
     }
 
     /**
+     * Clear pending media and invoke any registered cleanup callbacks.
+     */
+    clearMedia () {
+        // Fire instance-level callbacks (registered immediately in upload).
+        if (this._pendingMediaClearCallbacks?.size) {
+            this._pendingMediaClearCallbacks.forEach((callback) => callback());
+            this._pendingMediaClearCallbacks.clear();
+        }
+
+        // Fire global callbacks (for cross-model saves).
+        this._invokeMediaCallbacks(this._media);
+
+        this._media = {};
+    }
+
+    /**
+     * Clear media after a successful store/update.
+     *
+     * @private
+     */
+    _clearMediaAfterSave () {
+        if (this._response.statusCode >= 200 && this._response.statusCode < 300) {
+            this.clearMedia();
+        }
+    }
+
+    /**
+     * Invoke and remove any pending media cleanup callbacks matching the given media collections.
+     *
+     * @param {Object} media
+     * @private
+     */
+    _invokeMediaCallbacks (media) {
+        if (! media) return;
+
+        _.each(media, (value) => {
+            if (! value) return;
+
+            const key = JSON.stringify(value);
+            const callback = Model._globalMediaCallbacks.get(key);
+
+            if (callback) {
+                callback();
+                Model._globalMediaCallbacks.delete(key);
+            }
+        });
+    }
+
+    /**
      * Save the current model. Based on the value of the identifier `store` or `update` will be called.
      *
      * @param {Object} [extraData] Extra data to send to the API
@@ -400,3 +470,5 @@ export default class Model extends Request {
             + (identifier ? `/${identifier}` : '');
     }
 }
+
+Model._globalMediaCallbacks = new Map();

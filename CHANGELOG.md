@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+-  Clear file input components automatically after successful store/update by invoking cleanup callbacks registered during media upload.
 
 ## v0.4.0
 - Bumped dependencies which fix vulnerability issues.
